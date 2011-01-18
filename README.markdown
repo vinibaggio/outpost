@@ -1,7 +1,9 @@
-h1. Project: Outpost
+# Outpost
 
+Outpost is under development and is a project for the RMU: Ruby Mendicant
+University.
 
-h2. Features
+## Features
 
 Outpost will be a tool to monitor the state of your service (not server). What does it mean?
 
@@ -19,7 +21,7 @@ It should report a status per declared system.
 The idea is to make a reliable framework for the Ruby developer to create his own monitoring rules.
 So, summing it all up, Nagios in Ruby!
 
-h2. How it will work
+## How it will work
 
 Consider the following example:
 
