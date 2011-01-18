@@ -42,3 +42,7 @@ outpost.up? #=> false
 * Outposts: describes your whole system, provides a DSL to describe your services
 * Scouts: pure ruby stuff that will poke the service and check what it spits out
 * Hooks: pre-made hooks will be available to check common stuff like response_code and response_time
+
+## License
+
+MIT.
