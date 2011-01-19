@@ -18,7 +18,11 @@ class BasicDSLTest < Test::Unit::TestCase
     end
   end
 
-  def test_run_example
+  def test_run_success
+    assert_equal :up, ExampleSuccess.new.run
+  end
+
+  def test_run_failure
     assert_equal :down, ExampleFailure.new.run
   end
 end
