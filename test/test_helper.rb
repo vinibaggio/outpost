@@ -1,4 +1,4 @@
 
-require 'minitest/unit'
+require 'test/unit'
 
 require 'outpost'

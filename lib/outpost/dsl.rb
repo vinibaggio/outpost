@@ -1,14 +1,26 @@
 module Outpost
   class DSL
     class << self
-      def depends(scouts, &block)
-        @services ||= []
-        @services += scouts.map do |scout, description|
-          options = ScoutOptions.new
-          options.instance_eval(block)
+      attr_reader :scouts
 
-          scout.new(description, options)
+      def depends(scouts, &block)
+        @scouts ||= {}
+
+        config = Scout::Config.new
+        config.instance_eval(&block)
+
+        scouts.each do |scout, description|
+          @scouts[scout]               ||= {}
+          @scouts[scout][:description]   = description
+          @scouts[scout][:config]        = config
         end
+      end
+    end
+
+    def run
+      self.class.scouts.map do |scout, options|
+        scout_instance = scout.new(options[:description], options[:config])
+        scout_instance.run
       end
     end
   end
