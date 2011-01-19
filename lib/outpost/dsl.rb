@@ -18,10 +18,12 @@ module Outpost
     end
 
     def run
-      self.class.scouts.map do |scout, options|
+      statuses = self.class.scouts.map do |scout, options|
         scout_instance = scout.new(options[:description], options[:config])
         scout_instance.run
       end
+
+      Report.sumarize(statuses)
     end
   end
 end
