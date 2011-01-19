@@ -14,4 +14,8 @@ class OutpostReportTest < Test::Unit::TestCase
     assert_equal :down, Outpost::Report.sumarize([:down, :down, :down])
   end
 
+  def test_report_with_no_statuses
+    assert_equal :down, Outpost::Report.sumarize([])
+  end
+
 end
