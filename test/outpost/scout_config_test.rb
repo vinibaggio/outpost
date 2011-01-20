@@ -1,8 +1,8 @@
 require 'test_helper'
 
-class ConfigTest < Test::Unit::TestCase
+class ScoutConfigTest < Test::Unit::TestCase
   def setup
-    @config = Outpost::Scout::Config.new
+    @config = Outpost::ScoutConfig.new
   end
 
   def test_assign_options

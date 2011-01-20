@@ -6,7 +6,7 @@ module Outpost
       def depends(scouts, &block)
         @scouts ||= {}
 
-        config = Scout::Config.new
+        config = ScoutConfig.new
         config.instance_eval(&block)
 
         scouts.each do |scout, description|
