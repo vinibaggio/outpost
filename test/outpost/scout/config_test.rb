@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class ConfigTest < MiniTest::Unit::TestCase
+class ConfigTest < Test::Unit::TestCase
   def setup
     @config = Outpost::Scout::Config.new
   end
