@@ -23,7 +23,7 @@ module Outpost
         scout_instance.run
       end
 
-      Report.sumarize(statuses)
+      Report.summarize(statuses)
     end
   end
 end

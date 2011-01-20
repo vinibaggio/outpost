@@ -19,7 +19,7 @@ module Outpost
           end
         end
 
-        Report.sumarize(statuses)
+        Report.summarize(statuses)
       end
 
       def setup
