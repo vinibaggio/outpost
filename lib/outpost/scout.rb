@@ -20,10 +20,10 @@ module Outpost
       Report.summarize(statuses)
     end
 
-    def setup
+    def setup(*args)
       raise NotImplementedError, 'You must implement the setup method for Scout to work correctly.'
     end
-    def execute
+    def execute(*args)
       raise NotImplementedError, 'You must implement the execute method for Scout to work correctly.'
     end
 
