@@ -8,16 +8,17 @@ module Outpost
 
     def evaluate_response_body(scout, rules)
       rules.all? do |rule,comparison|
-        case rule
+        operator = case rule
         when :match
-          scout.response_body =~ comparison
+          "=~"
         when :not_match
-          scout.response_body !~ comparison
+          "!~"
         when :equals
-          scout.response_body == comparison
+          "=="
         when :differs
-          scout.response_body != comparison
+          "!="
         end
+        scout.response_body.send(operator, comparison)
       end
     end
   end
