@@ -3,7 +3,7 @@ module Outpost
     class << self
 
       def hooks
-        @hooks.dup
+        @hooks ? @hooks.dup : []
       end
 
       private

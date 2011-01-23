@@ -5,15 +5,14 @@ require 'outpost/scouts/http_scout'
 describe "basic DSL integration test" do
   class ExampleSuccess < Outpost::DSL
     depends Outpost::HttpScout => 'master http server' do
-      options :host => 'example.com'
+      options :host => 'localhost', :port => 9595
       report :up, :response_code => 200
     end
   end
 
   class ExampleFailure < Outpost::DSL
     depends Outpost::HttpScout => 'master http server' do
-      # Google will return 301, so it will fail
-      options :host => 'google.com'
+      options :host => 'localhost', :port => 9595, :path => '/fail'
       report :up, :response_code => 200
     end
   end
