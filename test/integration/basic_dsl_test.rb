@@ -26,8 +26,8 @@ describe "basic DSL integration test" do
 
   class ExampleBodySuccess < Outpost::DSL
     depends Outpost::HttpScout => 'master http server' do
-      options :host => 'localhost', :port => 9595, :path => '/fail'
-      report :up, :response_body => {:match => /Hello/}
+      options :host => 'localhost', :port => 9595, :path => '/'
+      report :up, :response_body => {:match => /Up/}
     end
   end
 
@@ -40,7 +40,7 @@ describe "basic DSL integration test" do
   end
 
   it "should report success when body is okay" do
-    assert_equal :down, ExampleBodySuccess.new.run
+    assert_equal :up, ExampleBodySuccess.new.run
   end
 
   it "should report failure when body is wrong" do
