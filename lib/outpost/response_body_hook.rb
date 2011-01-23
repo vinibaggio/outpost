@@ -12,7 +12,7 @@ module Outpost
         when :match
           scout.response_body =~ comparison
         when :not_match
-          !scout.response_body =~ comparison
+          scout.response_body !~ comparison
         when :equals
           scout.response_body == comparison
         when :differs

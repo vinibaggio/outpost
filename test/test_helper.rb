@@ -8,6 +8,8 @@ require 'support/test_app'
 require 'support/server'
 
 require 'outpost'
+require 'outpost/response_code_hook'
+require 'outpost/response_body_hook'
 
 # Inspired by assert_raises from minitest
 def assert_nothing_raised(&block)
