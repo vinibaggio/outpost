@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class DSLTest < Test::Unit::TestCase
+describe Outpost::DSL do
   class ExampleOne < Outpost::DSL
     depends Object => 'master http server' do
       options :host => 'localhost'
@@ -8,17 +8,16 @@ class DSLTest < Test::Unit::TestCase
     end
   end
 
-  def setup
+  before(:each) do
     @scouts = ExampleOne.scouts
   end
 
-  def test_should_create_correct_scout_description
+  it "should create correct scout description" do
     assert_equal(Object, @scouts.keys.first)
     assert_equal('master http server', @scouts[Object][:description])
-
   end
 
-  def test_should_create_correct_scout_config
+  it "should create correct scout config" do
     config = @scouts[Object][:config]
     assert_equal({:host => 'localhost'}, config.options)
     assert_equal({{:response_code => 200} => :up}, config.reports)

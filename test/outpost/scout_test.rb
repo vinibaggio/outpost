@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'ostruct'
 
-class ScoutTest < Test::Unit::TestCase
+describe Outpost::Scout do
   NoisyError = Class.new(StandardError)
 
   class ScoutExample < Outpost::Scout
@@ -12,59 +12,55 @@ class ScoutTest < Test::Unit::TestCase
     def execute(*args); end
   end
 
-  def test_run_positively
+  it "should report up when status match" do
     scout = ScoutExample.new("a scout", config_mock)
     scout.response = true
     assert_equal :up, scout.run
   end
 
-  def test_run_negatively
+  it "should report up when status match" do
     scout = ScoutExample.new("a scout", config_mock)
     scout.response = false
     assert_equal :down, scout.run
   end
 
-  def test_registered_hook
-    assert_not_nil ScoutExample.hooks[:response]
-  end
-
-  def test_register_invalid_hook
-    assert_raise ArgumentError do
+  it "should not register an invalid hook" do
+    assert_raises ArgumentError do
       add_hook(:invalid_hook, nil)
     end
   end
 
-  def test_register_valid_hook
+  it "should register a hook" do
     add_hook(:valid_hook, lambda{|b| b})
 
-    assert_not_nil ScoutExample.hooks[:valid_hook]
+    refute_nil ScoutExample.hooks[:valid_hook]
   end
 
-  def test_try_to_modify_hooks
+  it "should not be able to have its hooks modified" do
     ScoutExample.hooks[:another_hook] = {}
     assert_nil ScoutExample.hooks[:another_hook]
   end
 
-  def test_try_to_register_hook_from_outside
-    assert_raise NoMethodError do
+  it "should not be able to register from outside the class" do
+    assert_raises NoMethodError do
       ScoutExample.register_hook :a, lambda {}
     end
   end
 
-  def test_do_not_call_noisy_if_no_rules_were_made
+  it "should not call hook when there are no rules for that" do
     add_hook(:noisy, proc {|s,r| raise NoisyError})
-    assert_nothing_raised NoisyError do
+    assert_nothing_raised do
       scout = ScoutExample.new("a scout", config_mock)
       scout.run
     end
   end
 
-  def test_call_noisy_if_rules_were_made
+  it "should call hook when there are rules for that" do
     add_hook(:noisy, proc {|s,r| raise NoisyError})
     config = config_mock
     config.reports[{:noisy => nil}] = :down
 
-    assert_raise NoisyError do
+    assert_raises NoisyError do
       scout = ScoutExample.new("a scout", config)
       scout.run
     end

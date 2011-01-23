@@ -1,21 +1,19 @@
 require 'test_helper'
 
-class OutpostReportTest < Test::Unit::TestCase
-
-  def test_report_with_all_up
+describe Outpost::Report do
+  it "should report up when all are up" do
     assert_equal :up, Outpost::Report.summarize([:up, :up, :up, :up])
   end
 
-  def test_report_with_mixed_status
+  it "should report down when mixed statuses" do
     assert_equal :down, Outpost::Report.summarize([:up, :down, :up, :up])
   end
 
-  def test_report_with_all_down
+  it "should report down when all are down" do
     assert_equal :down, Outpost::Report.summarize([:down, :down, :down])
   end
 
-  def test_report_with_no_statuses
+  it "should report down when there are no statuses" do
     assert_equal :down, Outpost::Report.summarize([])
   end
-
 end

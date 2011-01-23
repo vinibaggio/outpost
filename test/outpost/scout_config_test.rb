@@ -1,23 +1,23 @@
 require 'test_helper'
 
-class ScoutConfigTest < Test::Unit::TestCase
-  def setup
+describe Outpost::ScoutConfig do
+  before(:each) do
     @config = Outpost::ScoutConfig.new
   end
 
-  def test_assign_options
+  it "should assign options accordingly" do
     @config.options :host => 'localhost'
 
     assert_equal({:host => 'localhost'}, @config.options)
   end
 
-  def test_assign_report
+  it "should assign reports accordingly" do
     @config.report :up, :response_code => 200
 
     assert_equal({{:response_code => 200} => :up}, @config.reports)
   end
 
-  def test_assign_multiple_reports
+  it "should assign multiple reports" do
     @config.report :up, :response_code => 200
     @config.report :down, :response_code => 404
 
