@@ -1,12 +1,15 @@
 require 'net/http'
 require 'outpost'
 
+require 'outpost/response_code_hook'
+require 'outpost/response_body_hook'
+
 module Outpost
   class HttpScout < Outpost::Scout
-    register_hook :response_code, lambda { |scout,response_code|
-      scout.response_code == response_code.to_i
-    }
-    attr_reader :response_code
+    extend Outpost::ResponseCodeHook
+    extend Outpost::ResponseBodyHook
+
+    attr_reader :response_code, :response_body
 
     def setup(options)
       @host = options[:host]
@@ -15,7 +18,9 @@ module Outpost
     end
 
     def execute
-      @response_code = Net::HTTP.get_response(@host, @path, @port).code.to_i
+      response = Net::HTTP.get_response(@host, @path, @port)
+      @response_code = response.code.to_i
+      @response_body = response.body
     end
   end
 end
