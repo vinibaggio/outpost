@@ -66,6 +66,16 @@ describe Outpost::Scout do
     end
   end
 
+  it "should complain when an unregistered hook is called" do
+    config = config_mock
+    config.reports[{:unregistered => nil}] = :up
+
+    assert_raises NotImplementedError do
+      scout = ScoutExample.new("a scout", config)
+      scout.run
+    end
+  end
+
   private
   def config_mock
     OpenStruct.new.tap do |config|

@@ -29,6 +29,10 @@ module Outpost
       response = execute
       @config.reports.each do |response_pair, status|
         response_pair.each do |attribute, value|
+          if self.class.hooks[attribute].nil?
+            raise NotImplementedError, "Hook '#{attribute}' wasn't implemented by #{self.class.name}"
+          end
+
           if self.class.hooks[attribute].call(self, value)
             statuses << status
           end
