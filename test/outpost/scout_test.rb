@@ -30,7 +30,7 @@ class ScoutTest < Test::Unit::TestCase
 
   def test_register_invalid_hook
     assert_raise ArgumentError do
-      add_hook(:invalid_hook, {})
+      add_hook(:invalid_hook, nil)
     end
   end
 
