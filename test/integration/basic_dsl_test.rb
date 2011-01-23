@@ -1,6 +1,6 @@
 require 'test_helper'
 
-require 'outpost/scouts/http_scout'
+require 'outpost/http_scout'
 
 describe "basic DSL integration test" do
   class ExampleSuccess < Outpost::DSL
