@@ -85,7 +85,7 @@ the HttpScout:
 
     module Outpost
       class HttpScout < Outpost::Scout
-        register_hook :response_code, { |scout,code| scout.response_code == code }
+        register_hook :response_code, lambda { |scout,code| scout.response_code == code }
 
         attr_reader :response_code
 
