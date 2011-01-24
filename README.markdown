@@ -76,8 +76,16 @@ For more information about hooks, check the section below.
 
 ## Hooks
 
-Hooks are responsible to test the output of the system's test in order to check
-the status. They are simply callable objects, i.e., objects that respond to #call
+Consider the following code snippet, taken from previous examples:
+
+    report :up, :response_code => 200
+    report :down, :response_body => {:match => /Ops/}
+
+In the example above, :response\_code and :response\_body are hooks responsible
+to get Scout's output and evaluate it, in order to determine a status.
+
+They must be registered into each Scout that wish to support different types
+of checks. Also, they are simply callable objects, i.e., objects that respond to #call
 and return true if any of the rules match.
 
 So you can easily create your own hook. Let's recreate the ResponseCodeHook in
