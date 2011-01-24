@@ -40,7 +40,7 @@ describe Outpost::ResponseBodyHook do
     end
 
     it "should return false when it doesn't" do
-      refute SubjectBody.evaluate_response_body(scout_mock, :equals => "Hello")
+      refute SubjectBody.evaluate_response_body(scout_mock, :equals => "Hell")
     end
   end
 
