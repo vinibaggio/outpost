@@ -25,11 +25,11 @@ So, summing it all up, Nagios in Ruby, much cooler!
 
 Consider the following example:
 
-    class WebOutpostExample < Outpost::DSL
-      depends WebScout => "web page" do
+    class HttpOutpostExample < Outpost::DSL
+      depends HttpScout => "web page" do
         options :host => 'localhost', :port => 3000
         report :up, :response_code => 200
-        report :up, :response_time => {:less_than => 100}
+        report :down, :response_body => {:match => /Ops/}
       end
     end
     outpost = WebOutpostExample.new
