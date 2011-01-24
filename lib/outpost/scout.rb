@@ -26,7 +26,7 @@ module Outpost
 
     def run
       statuses = []
-      response = execute
+      execute
       @config.reports.each do |response_pair, status|
         response_pair.each do |attribute, value|
           if self.class.hooks[attribute].nil?
