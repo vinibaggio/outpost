@@ -25,18 +25,16 @@ So, summing it all up, Nagios in Ruby, much cooler!
 
 Consider the following example:
 
-<pre>
-class WebOutpostExample < Outpost::DSL
-  depends WebScout => "web page" do
-    options :host => 'localhost', :port => 3000
-    report :up, :response_code => 200
-    report :up, :response_time => {:less_than => 100}
-  end
-end
-outpost = WebOutpostExample.new
-outpost.check!
-outpost.up? #=> false
-</pre>
+    class WebOutpostExample < Outpost::DSL
+      depends WebScout => "web page" do
+        options :host => 'localhost', :port => 3000
+        report :up, :response_code => 200
+        report :up, :response_time => {:less_than => 100}
+      end
+    end
+    outpost = WebOutpostExample.new
+    outpost.check!
+    outpost.up? #=> false
 
 
 ## Outpost
@@ -50,28 +48,26 @@ for more.
 Scout are pure Ruby classes that will test your server. For instance, check the
 HttpScout example below:
 
-<pre>
-module Outpost
-  class HttpScout < Outpost::Scout
-    extend Outpost::ResponseCodeHook
-    extend Outpost::ResponseBodyHook
+    module Outpost
+      class HttpScout < Outpost::Scout
+        extend Outpost::ResponseCodeHook
+        extend Outpost::ResponseBodyHook
 
-    attr_reader :response_code, :response_body
+        attr_reader :response_code, :response_body
 
-    def setup(options)
-      @host = options[:host]
-      @port = options[:port] || 80
-      @path = options[:path] || '/'
+        def setup(options)
+          @host = options[:host]
+          @port = options[:port] || 80
+          @path = options[:path] || '/'
+        end
+
+        def execute
+          response = Net::HTTP.get_response(@host, @path, @port)
+          @response_code = response.code.to_i
+          @response_body = response.body
+        end
+      end
     end
-
-    def execute
-      response = Net::HTTP.get_response(@host, @path, @port)
-      @response_code = response.code.to_i
-      @response_body = response.body
-    end
-  end
-end
-</pre>
 
 It must implement the #setup and #execute methods. The magic lies in the #execute
 method, where you can implement any kind of logic to test whether your system is up
@@ -87,26 +83,24 @@ and return true if any of the rules match.
 So you can easily create your own hook. Let's recreate the ResponseCodeHook in
 the HttpScout:
 
-<pre>
-module Outpost
-  class HttpScout < Outpost::Scout
-    register_hook :response_code, { |scout,code| scout.response_code == code }
+    module Outpost
+      class HttpScout < Outpost::Scout
+        register_hook :response_code, { |scout,code| scout.response_code == code }
 
-    attr_reader :response_code
+        attr_reader :response_code
 
-    def setup(options)
-      @host = options[:host]
-      @port = options[:port] || 80
-      @path = options[:path] || '/'
+        def setup(options)
+          @host = options[:host]
+          @port = options[:port] || 80
+          @path = options[:path] || '/'
+        end
+
+        def execute
+          response = Net::HTTP.get_response(@host, @path, @port)
+          @response_code = response.code.to_i
+        end
+      end
     end
-
-    def execute
-      response = Net::HTTP.get_response(@host, @path, @port)
-      @response_code = response.code.to_i
-    end
-  end
-end
-</pre>
 
 You can also check the supplied hooks in the source of the project to have
 an idea on how to implement more complex rules.
