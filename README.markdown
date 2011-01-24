@@ -86,9 +86,11 @@ to get Scout's output and evaluate it, in order to determine a status.
 
 They must be registered into each Scout that wish to support different types
 of checks. Also, they are simply callable objects, i.e., objects that respond to #call
-and return true if any of the rules match.
+and return true if any of the rules match. It will receive an instance
+of the scout (so you can query current system state) as the first parameter 
+and the state defined in the #report method as the second.
 
-So you can easily create your own hook. Let's recreate the ResponseCodeHook in
+So you can easily create your own hook. Let's recreate the :response\_code in
 the HttpScout:
 
     module Outpost
