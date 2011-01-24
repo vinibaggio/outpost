@@ -17,9 +17,12 @@ module Outpost
     #
     # It reads much better in the DSL, but doesn't make
     # much sense in terms of code, so it is changed to
-    # an inverted approach:
+    # an inverted approach, so:
+    #   status = 200
+    #   params = {:response_code => 200}
     #
-    # {{:response_code => 200} => :up}
+    #   gets stored as:
+    #    {:response_code => 200} = up
     def report(status, params)
       @reports ||= {}
       @reports[params] = status
