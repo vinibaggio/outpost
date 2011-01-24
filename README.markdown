@@ -26,7 +26,7 @@ So, summing it all up, Nagios in Ruby, much cooler!
 Consider the following example:
 
     class HttpOutpostExample < Outpost::DSL
-      depends HttpScout => "web page" do
+      using HttpScout => "web page" do
         options :host => 'localhost', :port => 3000
         report :up, :response_code => 200
         report :down, :response_body => {:match => /Ops/}

@@ -2,7 +2,7 @@ require 'test_helper'
 
 describe Outpost::DSL do
   class ExampleOne < Outpost::DSL
-    depends Object => 'master http server' do
+    using Object => 'master http server' do
       options :host => 'localhost'
       report :up, :response_code => 200
     end

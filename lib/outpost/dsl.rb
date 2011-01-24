@@ -3,7 +3,7 @@ module Outpost
     class << self
       attr_reader :scouts
 
-      def depends(scouts, &block)
+      def using(scouts, &block)
         @scouts ||= {}
 
         config = ScoutConfig.new
