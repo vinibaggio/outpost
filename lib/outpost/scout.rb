@@ -6,7 +6,9 @@ module Outpost
         @hooks ? @hooks.dup : []
       end
 
-      def register_hook(hook, callable)
+      def register_hook(hook, callable=nil, &callable_block)
+        callable ||= callable_block
+
         if callable.respond_to?(:call)
           @hooks ||= {}
           @hooks[hook] = callable

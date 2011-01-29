@@ -30,8 +30,14 @@ describe Outpost::Scout do
     end
   end
 
-  it "should register a hook" do
+  it "should register a hook using a lambda" do
     add_hook(:valid_hook, lambda{|b| b})
+
+    refute_nil ScoutExample.hooks[:valid_hook]
+  end
+
+  it "should register a hook using pure blocks for flexibility" do
+    ScoutExample.register_hook(:valid_hook) { |b| b }
 
     refute_nil ScoutExample.hooks[:valid_hook]
   end
@@ -80,8 +86,6 @@ describe Outpost::Scout do
   end
 
   def add_hook(hook, callable)
-    ScoutExample.class_eval do
-      register_hook hook, callable
-    end
+    ScoutExample.register_hook hook, callable
   end
 end
