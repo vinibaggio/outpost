@@ -33,9 +33,13 @@ Consider the following example:
       end
     end
     outpost = WebOutpostExample.new
-    outpost.check!
-    outpost.up? #=> false
+    outpost.run # => :down
 
+In this simple example, an Outpost was created to monitor a web server running
+on localhost at port 3000. Every time #check! is called, the outpost will
+run associated rules (in this example, check if the HTTP response code is 200
+and report "up" if it does and also check if the response body matches /Ops/,
+reporting "down" in that case).
 
 ## Outpost
 
