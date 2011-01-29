@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'ostruct'
 
-describe Outpost::ResponseCodeExpectation do
+describe Outpost::Expectations::ResponseCode do
   class SubjectCode
     class << self
       attr_reader :expectation, :evaluation_method
@@ -12,7 +12,7 @@ describe Outpost::ResponseCodeExpectation do
       end
 
     end
-    extend Outpost::ResponseCodeExpectation
+    extend Outpost::Expectations::ResponseCode
   end
 
   it "should return true when response codes match" do

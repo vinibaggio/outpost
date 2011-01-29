@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe Outpost::ResponseBodyExpectation do
+describe Outpost::Expectations::ResponseBody do
   class SubjectBody
     class << self
       attr_reader :expectation, :evaluation_method
@@ -11,7 +11,7 @@ describe Outpost::ResponseBodyExpectation do
       end
 
     end
-    extend Outpost::ResponseBodyExpectation
+    extend Outpost::Expectations::ResponseBody
   end
 
   describe ".evaluate_response_body with match" do

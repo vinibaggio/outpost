@@ -1,13 +1,12 @@
 require 'net/http'
 require 'outpost'
 
-require 'outpost/response_code_expectation'
-require 'outpost/response_body_expectation'
+require 'outpost/expectations'
 
 module Outpost
   class HttpScout < Outpost::Scout
-    extend Outpost::ResponseCodeExpectation
-    extend Outpost::ResponseBodyExpectation
+    extend Outpost::Expectations::ResponseCode
+    extend Outpost::Expectations::ResponseBody
 
     attr_reader :response_code, :response_body
 
