@@ -41,12 +41,6 @@ describe Outpost::Scout do
     assert_nil ScoutExample.hooks[:another_hook]
   end
 
-  it "should not be able to register from outside the class" do
-    assert_raises NoMethodError do
-      ScoutExample.register_hook :a, lambda {}
-    end
-  end
-
   it "should not call hook when there are no rules for that" do
     add_hook(:noisy, proc {|s,r| raise NoisyError})
     assert_nothing_raised do

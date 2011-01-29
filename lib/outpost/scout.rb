@@ -6,8 +6,6 @@ module Outpost
         @hooks ? @hooks.dup : []
       end
 
-      private
-      # Should be only callable by the class itself and not externally
       def register_hook(hook, callable)
         if callable.respond_to?(:call)
           @hooks ||= {}
@@ -21,6 +19,7 @@ module Outpost
     def initialize(description, config)
       @description = description
       @config      = config
+
       setup(config.options)
     end
 

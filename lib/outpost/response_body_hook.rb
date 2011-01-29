@@ -8,9 +8,7 @@ module Outpost
     }.freeze
 
     def self.extended(base)
-      base.class_eval do
-        register_hook :response_body, method(:evaluate_response_body)
-      end
+      base.register_hook :response_body, base.method(:evaluate_response_body)
     end
 
     def evaluate_response_body(scout, rules)
