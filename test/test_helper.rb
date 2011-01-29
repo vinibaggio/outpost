@@ -3,6 +3,7 @@ Bundler.setup(:test)
 
 require 'ruby-debug'
 require 'minitest/spec'
+require 'minitest/autorun'
 
 # Integration test helpers
 require 'support/test_app'
