@@ -14,7 +14,7 @@ It means:
 * it can monitor several servers
 * it can monitor whatever you can code with Ruby
 
-It will connect to the related machines (it won't have any proxies/programs running on the servers to
+It will connect to the related machines (it won't have any proxies/agents running on the servers to
 report data) and collect the data. The idea is to be completely uncoupled with the systems.
 It should report a status per declared system.
 
