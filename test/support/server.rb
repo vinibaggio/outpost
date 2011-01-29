@@ -15,6 +15,7 @@ class Server
   def boot(app)
     if not responsive?
       Thread.new do
+        Thin::Logging.silent = true
         Rack::Handler::Thin.run(app, :Port => 9595)
       end
     end

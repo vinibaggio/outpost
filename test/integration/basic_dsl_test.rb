@@ -3,6 +3,15 @@ require 'test_helper'
 require 'outpost/scouts/http'
 
 describe "basic DSL integration test" do
+  before(:each) do
+    @server = Server.new
+    @server.boot(TestApp)
+
+    while !@server.responsive?
+      sleep 1
+    end
+  end
+
   class ExampleSuccess < Outpost::DSL
     using Outpost::Scouts::Http => 'master http server' do
       options :host => 'localhost', :port => 9595

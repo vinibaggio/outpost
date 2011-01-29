@@ -18,6 +18,3 @@ rescue Exception => e
   flunk "No exception expected, but #{mu_pp(e.class)} was raised."
 end
 
-# Run example server throughout the test
-@server = Server.new
-@server.boot(TestApp)
