@@ -26,7 +26,7 @@ So, summing it all up, Nagios in Ruby, much cooler!
 Consider the following example:
 
     class HttpOutpostExample < Outpost::DSL
-      using HttpScout => "web page" do
+      using Scouts::Http => "web page" do
         options :host => 'localhost', :port => 3000
         report :up, :response_code => 200
         report :down, :response_body => {:match => /Ops/}
@@ -46,79 +46,83 @@ for more.
 ## Scout
 
 Scout are pure Ruby classes that will test your server. For instance, check the
-HttpScout example below:
+Outpost::Scouts::Http example below:
 
     module Outpost
-      class HttpScout < Outpost::Scout
-        extend Outpost::ResponseCodeHook
-        extend Outpost::ResponseBodyHook
+      module Scouts
+        class Http < Outpost::Scout
+          extend Outpost::Expectations::ResponseCode
+          extend Outpost::Expectations::ResponseBody
 
-        attr_reader :response_code, :response_body
+          attr_reader :response_code, :response_body
 
-        def setup(options)
-          @host = options[:host]
-          @port = options[:port] || 80
-          @path = options[:path] || '/'
-        end
+          def setup(options)
+            @host = options[:host]
+            @port = options[:port] || 80
+            @path = options[:path] || '/'
+          end
 
-        def execute
-          response = Net::HTTP.get_response(@host, @path, @port)
-          @response_code = response.code.to_i
-          @response_body = response.body
+          def execute
+            response = Net::HTTP.get_response(@host, @path, @port)
+            @response_code = response.code.to_i
+            @response_body = response.body
+          end
         end
       end
     end
 
 It must implement the #setup and #execute methods. The magic lies in the #execute
 method, where you can implement any kind of logic to test whether your system is up
-or not. You may also include hooks in order to process the output of your system.
-For more information about hooks, check the section below.
+or not. You may also include expectations in order to process the output of your system.
+For more information about expectations, check the section below.
 
-## Hooks
+## Expectations
 
 Consider the following code snippet, taken from previous examples:
 
     report :up, :response_code => 200
     report :down, :response_body => {:match => /Ops/}
 
-In the example above, :response\_code and :response\_body are hooks responsible
+In the example above, :response\_code and :response\_body are expectations, responsible
 to get Scout's output and evaluate it, in order to determine a status.
 
 They must be registered into each Scout that wish to support different types
-of checks. Also, they are simply callable objects, i.e., objects that respond to #call
+of expectations. You can supply a block or an object that respond to #call
 and return true if any of the rules match. It will receive an instance
 of the scout (so you can query current system state) as the first parameter 
 and the state defined in the #report method as the second.
 
-So you can easily create your own hook. Let's recreate the :response\_code in
-the HttpScout:
+So you can easily create your own expectation. Let's recreate the :response\_code in
+ Outpost::Scouts::Http:
 
     module Outpost
-      class HttpScout < Outpost::Scout
-        register_hook :response_code, lambda { |scout,code| scout.response_code == code }
+      module Scouts
+        class Http < Outpost::Scout
+          expect(:response_code) { |scout,code| scout.response_code == code }
 
-        attr_reader :response_code
+          attr_reader :response_code
 
-        def setup(options)
-          @host = options[:host]
-          @port = options[:port] || 80
-          @path = options[:path] || '/'
-        end
+          def setup(options)
+            @host = options[:host]
+            @port = options[:port] || 80
+            @path = options[:path] || '/'
+          end
 
-        def execute
-          response = Net::HTTP.get_response(@host, @path, @port)
-          @response_code = response.code.to_i
+          def execute
+            response = Net::HTTP.get_response(@host, @path, @port)
+            @response_code = response.code.to_i
+          end
         end
       end
     end
 
-You can also check the supplied hooks in the source of the project to have
+You can also check the supplied expectations in the source of the project to have
 an idea on how to implement more complex rules.
 
 ## TODO
 
-There's a lot to be done yet. For example, SSH support, ResponseTime hooks,
-support for :warning status, and multiple systems per Outpost.
+There's a lot to be done yet. For example, SSH support, ResponseTime
+expectations, support for :warning status, and multiple systems per Outpost.
 
 ## License
 
