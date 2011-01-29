@@ -6,7 +6,7 @@ describe Outpost::Scout do
 
   class ScoutExample < Outpost::Scout
     attr_accessor :response
-    register_hook :response, lambda {|scout, status| scout.response == status }
+    expect :response, lambda {|scout, status| scout.response == status }
 
     def setup(*args); end
     def execute(*args); end
@@ -24,39 +24,39 @@ describe Outpost::Scout do
     assert_equal :down, scout.run
   end
 
-  it "should not register an invalid hook" do
+  it "should not register an invalid expectation" do
     assert_raises ArgumentError do
-      add_hook(:invalid_hook, nil)
+      add_expectation(:invalid_expectation, nil)
     end
   end
 
-  it "should register a hook using a lambda" do
-    add_hook(:valid_hook, lambda{|b| b})
+  it "should register a expectation using a lambda" do
+    add_expectation(:valid_expectation, lambda{|b| b})
 
-    refute_nil ScoutExample.hooks[:valid_hook]
+    refute_nil ScoutExample.expectations[:valid_expectation]
   end
 
-  it "should register a hook using pure blocks for flexibility" do
-    ScoutExample.register_hook(:valid_hook) { |b| b }
+  it "should register a expectation using pure blocks for flexibility" do
+    ScoutExample.expect(:valid_expectation) { |b| b }
 
-    refute_nil ScoutExample.hooks[:valid_hook]
+    refute_nil ScoutExample.expectations[:valid_expectation]
   end
 
-  it "should not be able to have its hooks modified" do
-    ScoutExample.hooks[:another_hook] = {}
-    assert_nil ScoutExample.hooks[:another_hook]
+  it "should not be able to have its expectations modified" do
+    ScoutExample.expectations[:another_expectation] = {}
+    assert_nil ScoutExample.expectations[:another_expectation]
   end
 
-  it "should not call hook when there are no rules for that" do
-    add_hook(:noisy, proc {|s,r| raise NoisyError})
+  it "should not call expectation when there are no rules for that" do
+    add_expectation(:noisy, proc {|s,r| raise NoisyError})
     assert_nothing_raised do
       scout = ScoutExample.new("a scout", config_mock)
       scout.run
     end
   end
 
-  it "should call hook when there are rules for that" do
-    add_hook(:noisy, proc {|s,r| raise NoisyError})
+  it "should call expectation when there are rules for that" do
+    add_expectation(:noisy, proc {|s,r| raise NoisyError})
     config = config_mock
     config.reports[{:noisy => nil}] = :down
 
@@ -66,7 +66,7 @@ describe Outpost::Scout do
     end
   end
 
-  it "should complain when an unregistered hook is called" do
+  it "should complain when an unregistered expectation is called" do
     config = config_mock
     config.reports[{:unregistered => nil}] = :up
 
@@ -85,7 +85,7 @@ describe Outpost::Scout do
     end
   end
 
-  def add_hook(hook, callable)
-    ScoutExample.register_hook hook, callable
+  def add_expectation(expectation, callable)
+    ScoutExample.expect expectation, callable
   end
 end

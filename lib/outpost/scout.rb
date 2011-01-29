@@ -2,18 +2,18 @@ module Outpost
   class Scout
     class << self
 
-      def hooks
-        @hooks ? @hooks.dup : []
+      def expectations
+        @expectations ? @expectations.dup : []
       end
 
-      def register_hook(hook, callable=nil, &callable_block)
+      def expect(expectation, callable=nil, &callable_block)
         callable ||= callable_block
 
         if callable.respond_to?(:call)
-          @hooks ||= {}
-          @hooks[hook] = callable
+          @expectations ||= {}
+          @expectations[expectation] = callable
         else
-          raise ArgumentError, 'Object must respond to method #call to be a valid hook.'
+          raise ArgumentError, 'Object must respond to method #call to be a valid expectation.'
         end
       end
     end
@@ -30,11 +30,12 @@ module Outpost
       execute
       @config.reports.each do |response_pair, status|
         response_pair.each do |attribute, value|
-          if self.class.hooks[attribute].nil?
-            raise NotImplementedError, "Hook '#{attribute}' wasn't implemented by #{self.class.name}"
+          if self.class.expectations[attribute].nil?
+            message = "expectation '#{attribute}' wasn't implemented by #{self.class.name}"
+            raise NotImplementedError, message
           end
 
-          if self.class.hooks[attribute].call(self, value)
+          if self.class.expectations[attribute].call(self, value)
             statuses << status
           end
         end

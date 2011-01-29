@@ -1,17 +1,17 @@
 require 'test_helper'
 
-describe Outpost::ResponseBodyHook do
+describe Outpost::ResponseBodyExpectation do
   class SubjectBody
     class << self
-      attr_reader :hook, :evaluation_method
+      attr_reader :expectation, :evaluation_method
 
-      def register_hook(hook, evaluation_method)
-        @hook = hook
+      def expect(expectation, evaluation_method)
+        @expectation       = expectation
         @evaluation_method = evaluation_method
       end
 
     end
-    extend Outpost::ResponseBodyHook
+    extend Outpost::ResponseBodyExpectation
   end
 
   describe ".evaluate_response_body with match" do
@@ -71,8 +71,8 @@ describe Outpost::ResponseBodyHook do
     end
   end
 
-  it "should set hook correctly" do
-    assert_equal :response_body, SubjectBody.hook
+  it "should set expectation correctly" do
+    assert_equal :response_body, SubjectBody.expectation
   end
 
   it "should set evaluation method correctly" do

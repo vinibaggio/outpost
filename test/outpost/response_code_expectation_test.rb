@@ -1,18 +1,18 @@
 require 'test_helper'
 require 'ostruct'
 
-describe Outpost::ResponseCodeHook do
+describe Outpost::ResponseCodeExpectation do
   class SubjectCode
     class << self
-      attr_reader :hook, :evaluation_method
+      attr_reader :expectation, :evaluation_method
 
-      def register_hook(hook, evaluation_method)
-        @hook = hook
+      def expect(expectation, evaluation_method)
+        @expectation       = expectation
         @evaluation_method = evaluation_method
       end
 
     end
-    extend Outpost::ResponseCodeHook
+    extend Outpost::ResponseCodeExpectation
   end
 
   it "should return true when response codes match" do
@@ -27,12 +27,12 @@ describe Outpost::ResponseCodeHook do
     assert SubjectCode.evaluate_response_code(scout_mock, "200")
   end
 
-  it "should set hook correctly" do
-    assert_equal :response_code, SubjectCode.hook
+  it "should set expectation correctly" do
+    assert_equal :response_code, SubjectCode.expectation
   end
 
   it "should set evaluation method correctly" do
-    assert_equal SubjectCode.method(:evaluate_response_code), \
+    assert_equal SubjectCode.method(:evaluate_response_code),
       SubjectCode.evaluation_method
   end
 
