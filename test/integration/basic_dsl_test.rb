@@ -1,31 +1,31 @@
 require 'test_helper'
 
-require 'outpost/http_scout'
+require 'outpost/scouts/http'
 
 describe "basic DSL integration test" do
   class ExampleSuccess < Outpost::DSL
-    using Outpost::HttpScout => 'master http server' do
+    using Outpost::Scouts::Http => 'master http server' do
       options :host => 'localhost', :port => 9595
       report :up, :response_code => 200
     end
   end
 
   class ExampleFailure < Outpost::DSL
-    using Outpost::HttpScout => 'master http server' do
+    using Outpost::Scouts::Http => 'master http server' do
       options :host => 'localhost', :port => 9595, :path => '/fail'
       report :up, :response_code => 200
     end
   end
 
   class ExampleBodyFailure < Outpost::DSL
-    using Outpost::HttpScout => 'master http server' do
+    using Outpost::Scouts::Http => 'master http server' do
       options :host => 'localhost', :port => 9595, :path => '/fail'
       report :down, :response_body => {:equals => 'Omg fail'}
     end
   end
 
   class ExampleBodySuccess < Outpost::DSL
-    using Outpost::HttpScout => 'master http server' do
+    using Outpost::Scouts::Http => 'master http server' do
       options :host => 'localhost', :port => 9595, :path => '/'
       report :up, :response_body => {:match => /Up/}
     end
