@@ -1,6 +1,7 @@
 require 'bundler'
 Bundler.setup(:test)
 
+require 'ruby-debug'
 require 'minitest/spec'
 
 # Integration test helpers
