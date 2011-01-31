@@ -21,14 +21,7 @@ module Outpost
 
     def run
       @reports = self.class.scouts.map do |scout, options|
-        scout_instance = scout.new(options[:description], options[:config])
-
-        params = {
-          :name        => scout.name,
-          :description => options[:description],
-          :status      => scout_instance.run
-        }
-        Report.new(params)
+        run_scout(scout, options)
       end
 
       statuses = @reports.map { |r| r.status }
@@ -46,6 +39,17 @@ module Outpost
 
     def messages
       reports.map { |r| r.to_s }
+    end
+
+    def run_scout(scout, options)
+      scout_instance = scout.new(options[:description], options[:config])
+
+      params = {
+        :name        => scout.name,
+        :description => options[:description],
+        :status      => scout_instance.run
+      }
+      Report.new(params)
     end
   end
 end
