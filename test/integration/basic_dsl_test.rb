@@ -8,7 +8,7 @@ describe "basic DSL integration test" do
     @server.boot(TestApp)
 
     while !@server.responsive?
-      sleep 1
+      sleep 0.1
     end
   end
 

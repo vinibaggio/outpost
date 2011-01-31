@@ -23,7 +23,19 @@ describe "using more complex DSL integration test" do
 
     using Outpost::Scouts::Ping => 'load balancer' do
       options :host => 'localhost'
-      report :up, :response_time => {:less_than => 1}
+      report :up, :response_time => {:less_than => 0}
+    end
+  end
+
+  class ExampleAllFailing < Outpost::DSL
+    using Outpost::Scouts::Http => 'master http server' do
+      options :host => 'localhost', :port => 9595, :path => '/fail'
+      report :up, :response_body => {:match => /Up/}
+    end
+
+    using Outpost::Scouts::Ping => 'load balancer' do
+      options :host => 'localhost'
+      report :up, :response_time => {:less_than => -1}
     end
   end
 
@@ -33,5 +45,9 @@ describe "using more complex DSL integration test" do
 
   it "should report down when at least one scout reports down" do
     assert_equal :down, ExampleOneFailingOnePassing.new.run
+  end
+
+  it "should report down when all are down" do
+    assert_equal :down, ExampleAllFailing.new.run
   end
 end
