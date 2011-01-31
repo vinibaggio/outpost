@@ -1,5 +1,5 @@
 require 'bundler'
-Bundler.setup(:test)
+Bundler.setup(:default, :test)
 
 require 'ruby-debug'
 require 'minitest/spec'
