@@ -32,7 +32,7 @@ Consider the following example:
         report :down, :response_body => {:match => /Ops/}
       end
     end
-    outpost = WebOutpostExample.new
+    outpost = HttpOutpostExample.new
     outpost.run # => :down
 
 In this simple example, an Outpost was created to monitor a web server running
