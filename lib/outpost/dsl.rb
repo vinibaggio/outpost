@@ -17,13 +17,23 @@ module Outpost
       end
     end
 
+    attr_reader :last_status
+
     def run
       statuses = self.class.scouts.map do |scout, options|
         scout_instance = scout.new(options[:description], options[:config])
         scout_instance.run
       end
 
-      Report.summarize(statuses)
+      @last_status = Report.summarize(statuses)
+    end
+
+    def up?
+      @last_status == :up
+    end
+
+    def down?
+      @last_status == :down
     end
   end
 end
