@@ -29,13 +29,13 @@ module Outpost
       statuses = []
       execute
       @config.reports.each do |response_pair, status|
-        response_pair.each do |attribute, value|
-          if self.class.expectations[attribute].nil?
-            message = "expectation '#{attribute}' wasn't implemented by #{self.class.name}"
+        response_pair.each do |expectation, value|
+          if self.class.expectations[expectation].nil?
+            message = "expectation '#{expectation}' wasn't implemented by #{self.class.name}"
             raise NotImplementedError, message
           end
 
-          if self.class.expectations[attribute].call(self, value)
+          if self.class.expectations[expectation].call(self, value)
             statuses << status
           end
         end

@@ -50,4 +50,15 @@ describe "using more complex DSL integration test" do
   it "should report down when all are down" do
     assert_equal :down, ExampleAllFailing.new.run
   end
+
+  it "should build error message" do
+    outpost = ExampleAllFailing.new
+    outpost.run
+
+    assert_equal "Outpost::Scouts::Http: 'master http server' is reporting down.",
+      outpost.messages.first
+
+    assert_equal "Outpost::Scouts::Ping: 'load balancer' is reporting down.",
+      outpost.messages.last
+  end
 end

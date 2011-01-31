@@ -125,8 +125,7 @@ an idea on how to implement more complex rules.
 
 ## TODO
 
-There's a lot to be done yet. For example, SSH support,
-support for :warning status, and multiple systems per Outpost.
+There's a lot to be done yet. For example, SSH support, :warning status, etc.
 
 ## License
 

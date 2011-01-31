@@ -17,13 +17,21 @@ module Outpost
       end
     end
 
-    attr_reader :last_status
+    attr_reader :last_status, :reports
 
     def run
-      statuses = self.class.scouts.map do |scout, options|
+      @reports = self.class.scouts.map do |scout, options|
         scout_instance = scout.new(options[:description], options[:config])
-        scout_instance.run
+
+        params = {
+          :name        => scout.name,
+          :description => options[:description],
+          :status      => scout_instance.run
+        }
+        Report.new(params)
       end
+
+      statuses = @reports.map { |r| r.status }
 
       @last_status = Report.summarize(statuses)
     end
@@ -34,6 +42,10 @@ module Outpost
 
     def down?
       @last_status == :down
+    end
+
+    def messages
+      reports.map { |r| r.to_s }
     end
   end
 end

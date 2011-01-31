@@ -69,4 +69,18 @@ describe Outpost::DSL do
       refute @outpost.down?
     end
   end
+
+  describe "#messages" do
+    before(:each) do
+      @outpost = ExampleOne.new
+    end
+
+    it "should return true when last status is up" do
+      ScoutMock.status = :up
+      @outpost.run
+
+      assert_equal "ScoutMock: 'master http server' is reporting up.",
+        @outpost.messages.first
+    end
+  end
 end
