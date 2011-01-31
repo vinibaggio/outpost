@@ -4,15 +4,14 @@ module Outpost
       attr_reader :scouts
 
       def using(scouts, &block)
-        @scouts ||= {}
+        @scouts ||= Hash.new { |h, k| h[k] = {} }
 
         config = ScoutConfig.new
         config.instance_eval(&block)
 
         scouts.each do |scout, description|
-          @scouts[scout]               ||= {}
-          @scouts[scout][:description]   = description
-          @scouts[scout][:config]        = config
+          @scouts[scout][:description] = description
+          @scouts[scout][:config]      = config
         end
       end
     end
