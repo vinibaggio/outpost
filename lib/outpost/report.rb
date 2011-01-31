@@ -9,7 +9,7 @@ module Outpost
     # if passed [:up, :up, :up], will result on :up
     # if passed [:up, :down, :up], will result on :down
     def self.summarize(status_list)
-      return :down if status_list.empty? || status_list.any? { |s| s == :down }
+      return :down if status_list.empty? || status_list.include?(:down)
       return :up
     end
 
