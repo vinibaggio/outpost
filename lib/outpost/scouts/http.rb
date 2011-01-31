@@ -18,6 +18,7 @@ module Outpost
       end
 
       def execute
+        # FIXME Apply Dependency Injection Principle here
         response = Net::HTTP.get_response(@host, @path, @port)
         @response_code = response.code.to_i
         @response_body = response.body
