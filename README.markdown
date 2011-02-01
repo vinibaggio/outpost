@@ -1,8 +1,5 @@
 # Outpost
 
-Outpost is under development and is a project for the RMU: Ruby Mendicant
-University.
-
 ## Features
 
 Outpost is a tool to monitor the state of your service (not server). What does it mean?
@@ -22,6 +19,8 @@ The idea is to make a reliable framework for the Ruby developer to create his ow
 So, summing it all up, Nagios in Ruby, much cooler!
 
 ## Installing
+
+Outpost is only tested in Ruby 1.9.2, but should run fine in older rubies.
 
     gem install outpost
 
