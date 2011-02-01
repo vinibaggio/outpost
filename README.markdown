@@ -21,12 +21,39 @@ It should report a status per declared system.
 The idea is to make a reliable framework for the Ruby developer to create his own monitoring rules.
 So, summing it all up, Nagios in Ruby, much cooler!
 
+## Installing
+
+    gem install outpost
+
+## Starting
+
+To create your Outposts, you must require 'outpost'. You also need to include
+'outpost/scouts' if you want to use the supplied scouts. Example:
+
+    require 'outpost'
+    require 'outpost/scouts'
+
+    class Bla < Outpost::DSL
+      using Outpost::Scouts::Http => "web page" do
+        options :host => 'localhost', :port => 3000
+        report :up, :response_code => 200
+      end
+    end
+
+    a = Bla.new
+    a.run
+    p a.messages # => ["Outpost::Scouts::Http: 'web page' is reporting up."]
+
+
 ## How it works
 
 Consider the following example:
 
+    require 'outpost'
+    require 'outpost/scouts'
+
     class HttpOutpostExample < Outpost::DSL
-      using Scouts::Http => "web page" do
+      using Outpost::Scouts::Http => "web page" do
         options :host => 'localhost', :port => 3000
         report :up, :response_code => 200
         report :down, :response_body => {:match => /Ops/}
