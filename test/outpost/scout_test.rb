@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'ostruct'
 
 describe Outpost::Scout do
   NoisyError = Class.new(StandardError)

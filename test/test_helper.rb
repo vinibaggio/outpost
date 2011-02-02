@@ -2,7 +2,9 @@ require 'bundler'
 Bundler.setup(:default, :test)
 
 require 'ruby-debug'
+require 'ostruct'
 require 'minitest/spec'
+require 'minitest/mock'
 require 'minitest/autorun'
 
 # Integration test helpers
@@ -11,6 +13,7 @@ require 'support/server'
 
 require 'outpost'
 require 'outpost/expectations'
+require 'outpost/scouts'
 
 # Inspired by assert_raises from minitest
 def assert_nothing_raised(&block)
