@@ -40,6 +40,8 @@ module Outpost
       reports.map { |r| r.to_s }
     end
 
+    private
+
     def run_scout(scout, options)
       scout_instance = scout.new(options[:description], options[:config])
 
