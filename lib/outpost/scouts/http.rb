@@ -15,11 +15,13 @@ module Outpost
         @path = options[:path] || '/'
       end
 
-      def execute
-        # FIXME Apply Dependency Injection Principle here
-        response = Net::HTTP.get_response(@host, @path, @port)
+      def execute(http_class=Net::HTTP)
+        response = http_class.get_response(@host, @path, @port)
+
         @response_code = response.code.to_i
         @response_body = response.body
+      rescue SocketError, Errno::ECONNREFUSED
+        @response_code = @response_body = nil
       end
     end
   end
