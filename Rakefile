@@ -22,5 +22,5 @@ end
 
 desc 'Release new gem version'
 task :release => :build do
-  system "gem push outpost-#{Bunder::VERSION}"
+  system "gem push outpost-#{Outpost::VERSION}"
 end
