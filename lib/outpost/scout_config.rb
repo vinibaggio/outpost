@@ -4,6 +4,7 @@ module Outpost
 
     def initialize
       @reports = {}
+      @options = {}
     end
 
     # Reads/writes any options. It will passed
