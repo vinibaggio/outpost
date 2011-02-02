@@ -1,7 +1,6 @@
 module Outpost
   class Scout
     class << self
-
       def expectations
         @expectations ? @expectations.dup : []
       end

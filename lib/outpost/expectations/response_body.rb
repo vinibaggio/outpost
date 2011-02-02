@@ -2,10 +2,10 @@ module Outpost
   module Expectations
     module ResponseBody
       RESPONSE_BODY_MAPPING = {
-        :match => "=~",
+        :match     => "=~",
         :not_match => "!~",
-        :equals => "==",
-        :differs => "!="
+        :equals    => "==",
+        :differs   => "!="
       }.freeze
 
       def self.extended(base)
@@ -13,7 +13,7 @@ module Outpost
       end
 
       def evaluate_response_body(scout, rules)
-        rules.all? do |rule,comparison|
+        rules.all? do |rule, comparison|
           scout.response_body.send(RESPONSE_BODY_MAPPING[rule], comparison)
         end
       end

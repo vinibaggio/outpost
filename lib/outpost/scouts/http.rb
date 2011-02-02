@@ -1,6 +1,4 @@
 require 'net/http'
-require 'outpost'
-
 require 'outpost/expectations'
 
 module Outpost

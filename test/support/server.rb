@@ -20,5 +20,4 @@ class Server
       end
     end
   end
-
 end
