@@ -151,7 +151,7 @@ an idea on how to implement more complex rules.
 
 ## TODO
 
-There's a lot to be done yet. For example, SSH support, :warning status, etc.
+See [TODO](https://github.com/vinibaggio/outpost/blob/master/TODO.md).
 
 ## License
 
