@@ -14,7 +14,16 @@ module Outpost
 
       def evaluate_response_body(scout, rules)
         rules.all? do |rule, comparison|
-          scout.response_body.send(RESPONSE_BODY_MAPPING[rule], comparison)
+          case rule
+          when :match
+            scout.response_body =~ comparison
+          when :not_match
+            scout.response_body !~ comparison
+          when :equals
+            scout.response_body == comparison
+          when :differs
+            scout.response_body != comparison
+          end
         end
       end
     end

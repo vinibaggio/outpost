@@ -5,7 +5,8 @@ describe Outpost::DSL do
     class << self
       attr_accessor :status
     end
-    def run; self.class.status; end
+    def initialize(*args); end
+    def run              ; self.class.status ; end
   end
 
   class ExampleOne < Outpost::DSL

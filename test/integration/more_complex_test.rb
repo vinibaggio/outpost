@@ -3,6 +3,15 @@ require 'test_helper'
 require 'outpost/scouts'
 
 describe "using more complex DSL integration test" do
+  before(:each) do
+    @server = Server.new
+    @server.boot(TestApp)
+
+    while !@server.responsive?
+      sleep 0.1
+    end
+  end
+
   class ExamplePingAndHttp < Outpost::DSL
     using Outpost::Scouts::Http => 'master http server' do
       options :host => 'localhost', :port => 9595, :path => '/'
@@ -55,10 +64,13 @@ describe "using more complex DSL integration test" do
     outpost = ExampleAllFailing.new
     outpost.run
 
-    assert_equal "Outpost::Scouts::Http: 'master http server' is reporting down.",
-      outpost.messages.first
+    assert outpost.messages.include?(
+      "Outpost::Scouts::Http: 'master http server' is reporting down."
+    )
 
-    assert_equal "Outpost::Scouts::Ping: 'load balancer' is reporting down.",
-      outpost.messages.last
+    assert outpost.messages.include?(
+      "Outpost::Scouts::Ping: 'load balancer' is reporting down."
+    )
+
   end
 end
