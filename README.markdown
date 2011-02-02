@@ -155,4 +155,4 @@ There's a lot to be done yet. For example, SSH support, :warning status, etc.
 
 ## License
 
-MIT.
+MIT License.
