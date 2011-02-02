@@ -1,4 +1,5 @@
 require 'net/ping/external'
+require 'outpost/expectations'
 
 module Outpost
   module Scouts
