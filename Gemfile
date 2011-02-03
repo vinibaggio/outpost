@@ -1,6 +1,8 @@
 source :rubygems
 
 gem 'net-ping', :require => false
+gem 'mail',     :require => false
+
 
 group :test do
   gem 'thin'

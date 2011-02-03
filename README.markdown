@@ -149,6 +149,35 @@ So you can easily create your own expectation. Let's recreate the :response\_cod
 You can also check the supplied expectations in the source of the project to have
 an idea on how to implement more complex rules.
 
+## Notifiers
+
+Notifiers query Outposts and act upon its status and reports. In the example
+below, an Email notifier is being used to report failures in the system to the
+system administrator:
+
+    require 'outpost'
+    require 'outpost/scouts'
+    require 'outpost/notifiers'
+
+    class HttpOutpostExample < Outpost::DSL
+      notify Outpost::Notifiers::Email, {
+        :from => 'outpost@example.com',
+        :to   => 'sleep_deprived_admin@example.com'
+      }
+
+      using Outpost::Scouts::Http => "web page" do
+        options :host => 'localhost', :port => 3000
+        report :up, :response_code => 200
+        report :down, :response_body => {:match => /Ops/}
+      end
+    end
+    outpost = HttpOutpostExample.new
+    outpost.run # => :down
+
+    # Will send an email to the poor sleep-deprived Sys Admin if the system is
+    # down.
+    outpost.notify if outpost.down?
+
 ## TODO
 
 See [TODO](https://github.com/vinibaggio/outpost/blob/master/TODO.md).
