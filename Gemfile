@@ -1,10 +1,9 @@
 source :rubygems
 
-gem 'net-ping', :require => false
-gem 'mail',     :require => false
-
-
 group :test do
+  gem 'mail',     :require => false
+  gem 'net-ping', :require => false
+
   gem 'thin'
   gem 'rack'
   gem 'sinatra'

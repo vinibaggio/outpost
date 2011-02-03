@@ -1,4 +1,9 @@
-require 'mail'
+begin
+  require 'mail'
+rescue LoadError => e
+  puts "Please install mail gem: gem install mail"
+  raise
+end
 
 module Outpost
   module Notifiers
