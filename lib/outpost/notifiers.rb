@@ -1,0 +1,1 @@
+require 'outpost/notifiers/email'

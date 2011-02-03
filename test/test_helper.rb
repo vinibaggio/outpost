@@ -13,6 +13,7 @@ require 'support/server'
 
 require 'outpost'
 require 'outpost/expectations'
+require 'outpost/notifiers'
 require 'outpost/scouts'
 
 # Inspired by assert_raises from minitest
