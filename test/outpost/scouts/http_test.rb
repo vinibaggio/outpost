@@ -39,7 +39,6 @@ describe Outpost::Scouts::Http do
     refute @subject.response_body
   end
 
-
   private
 
   def config_stub(options={})

@@ -11,12 +11,10 @@ module Outpost
         @host = options[:host]
       end
 
-      def execute
-        # FIXME Apply Dependency Injection Principle here
-        pinger = Net::Ping::External.new
+      def execute(pinger=Net::Ping::External.new)
         if pinger.ping(@host)
           # Miliseconds
-          @response_time = pinger.duration * 100
+          @response_time = pinger.duration * 1000
         end
       end
     end
