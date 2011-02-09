@@ -3,6 +3,7 @@ source :rubygems
 group :test do
   gem 'mail',     :require => false
   gem 'net-ping', :require => false
+  gem 'tinder',   :require => false
 
   gem 'thin'
   gem 'rack'
