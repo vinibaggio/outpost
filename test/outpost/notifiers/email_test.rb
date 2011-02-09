@@ -7,6 +7,10 @@ describe Outpost::Notifiers::Email do
     end
   end
 
+  after(:each) do
+    Mail::TestMailer.deliveries = []
+  end
+
   describe "#initialize" do
     it "should raise error when :from is not present" do
       assert_raises ArgumentError do
@@ -37,10 +41,6 @@ describe Outpost::Notifiers::Email do
   end
 
   describe "#notify" do
-    after(:each) do
-      Mail::TestMailer.deliveries = []
-    end
-
     it "should send a simple email" do
       subject = Outpost::Notifiers::Email.new(
         :from => 'mail@example.com',

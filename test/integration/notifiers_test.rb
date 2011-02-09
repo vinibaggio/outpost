@@ -21,10 +21,13 @@ describe "using notifiers" do
     Mail.defaults do
       delivery_method :test
     end
-    Mail::TestMailer.deliveries = []
 
     @outpost = ExampleMailNotifier.new
     @outpost.run
+  end
+
+  after(:each) do
+    Mail::TestMailer.deliveries = []
   end
 
   it "should send email when asked to notify" do
