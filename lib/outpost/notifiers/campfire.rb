@@ -13,7 +13,7 @@ module Outpost
         @token     = options[:token]     || ''
         @room      = options[:room]      || ''
 
-        if @subdomain.empty? || @token.empty? || @room.empty?
+        if [@subdomain, @token, @room].any?(&:empty?)
           raise ArgumentError, 'You need to supply :token, :subdomain and :room.'
         end
       end
