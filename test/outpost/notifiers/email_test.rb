@@ -86,13 +86,5 @@ describe Outpost::Notifiers::Email do
       :messages    => ['1', '2']
     )
   end
-
-  def build_stub(params={})
-    OpenStruct.new.tap do |stub|
-      params.each do |key, val|
-        stub.send "#{key}=", val
-      end
-    end
-  end
 end
 

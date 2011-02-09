@@ -16,15 +16,15 @@ describe Outpost::Expectations::ResponseCode do
   end
 
   it "should return true when response codes match" do
-    assert SubjectCode.evaluate_response_code(scout_mock, 200)
+    assert SubjectCode.evaluate_response_code(scout_stub, 200)
   end
 
   it "should return false when response codes doesn't match" do
-    refute SubjectCode.evaluate_response_code(scout_mock, 404)
+    refute SubjectCode.evaluate_response_code(scout_stub, 404)
   end
 
   it "should convert types accordinly" do
-    assert SubjectCode.evaluate_response_code(scout_mock, "200")
+    assert SubjectCode.evaluate_response_code(scout_stub, "200")
   end
 
   it "should set expectation correctly" do
@@ -37,9 +37,7 @@ describe Outpost::Expectations::ResponseCode do
   end
 
   private
-  def scout_mock
-    @scout_mock ||= OpenStruct.new.tap do |scout_mock|
-      scout_mock.response_code = 200
-    end
+  def scout_stub
+    build_stub(:response_code => 200)
   end
 end

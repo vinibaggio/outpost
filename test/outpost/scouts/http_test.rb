@@ -42,16 +42,10 @@ describe Outpost::Scouts::Http do
   private
 
   def config_stub(options={})
-    OpenStruct.new.tap do |stub|
-      stub.options = options
-    end
+    build_stub(:options => options)
   end
 
   def response_stub(code, body)
-    OpenStruct.new.tap do |stub|
-      stub.code = code
-      stub.body = body
-    end
+    build_stub(:code => code, :body => body)
   end
-
 end

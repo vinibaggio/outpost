@@ -31,15 +31,10 @@ describe Outpost::Scouts::Ping do
   private
 
   def config_stub(options={})
-    OpenStruct.new.tap do |stub|
-      stub.options = options
-    end
+    build_stub(:options => options)
   end
 
   def pinger_stub(should_respond, time=nil)
-    OpenStruct.new.tap do |stub|
-      stub.ping     = should_respond
-      stub.duration = time
-    end
+    build_stub(:ping => should_respond, :duration => time)
   end
 end

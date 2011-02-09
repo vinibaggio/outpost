@@ -77,11 +77,11 @@ describe Outpost::Scout do
 
   private
   def config_mock
-    OpenStruct.new.tap do |config|
-      config.reports = {}
-      config.reports[{:response => true}] = :up
-      config.reports[{:response => false}] = :down
-    end
+    reports = {
+      {:response => true}  => :up,
+      {:response => false} => :down
+    }
+    build_stub(:reports => reports)
   end
 
   def add_expectation(expectation, callable)

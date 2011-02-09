@@ -10,16 +10,14 @@ require 'minitest/autorun'
 # Integration test helpers
 require 'support/test_app'
 require 'support/server'
+require 'support/stubs'
+require 'support/nothing_raised'
 
 require 'outpost'
 require 'outpost/expectations'
 require 'outpost/notifiers'
 require 'outpost/scouts'
 
-# Inspired by assert_raises from minitest
-def assert_nothing_raised(&block)
-  block.call
-rescue Exception => e
-  flunk "No exception expected, but #{mu_pp(e.class)} was raised."
-end
+include Support::Stubs
+include Support::NothingRaised
 

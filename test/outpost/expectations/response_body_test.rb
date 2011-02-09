@@ -16,58 +16,58 @@ describe Outpost::Expectations::ResponseBody do
 
   describe ".evaluate_response_body with match" do
     it "should return true when it matches" do
-      assert SubjectBody.evaluate_response_body(scout_mock, :match => /ll/)
+      assert SubjectBody.evaluate_response_body(scout_stub, :match => /ll/)
     end
 
     it "should return false when it doesn't" do
-      refute SubjectBody.evaluate_response_body(scout_mock, :match => /omg/)
+      refute SubjectBody.evaluate_response_body(scout_stub, :match => /omg/)
     end
   end
 
   describe ".evaluate_response_body with not_match" do
     it "should return true when it matches" do
-      assert SubjectBody.evaluate_response_body(scout_mock, :not_match => /omg/)
+      assert SubjectBody.evaluate_response_body(scout_stub, :not_match => /omg/)
     end
 
     it "should return false when it doesn't" do
-      refute SubjectBody.evaluate_response_body(scout_mock, :not_match => /Hello/)
+      refute SubjectBody.evaluate_response_body(scout_stub, :not_match => /Hello/)
     end
   end
 
   describe ".evaluate_response_body with equals" do
     it "should return true when it matches" do
-      assert SubjectBody.evaluate_response_body(scout_mock, :equals => "Hello!")
+      assert SubjectBody.evaluate_response_body(scout_stub, :equals => "Hello!")
     end
 
     it "should return false when it doesn't" do
-      refute SubjectBody.evaluate_response_body(scout_mock, :equals => "Hell")
+      refute SubjectBody.evaluate_response_body(scout_stub, :equals => "Hell")
     end
   end
 
   describe ".evaluate_response_body with differs" do
     it "should return true when it matches" do
-      assert SubjectBody.evaluate_response_body(scout_mock, :differs => "Hell")
+      assert SubjectBody.evaluate_response_body(scout_stub, :differs => "Hell")
     end
 
     it "should return false when it doesn't" do
-      refute SubjectBody.evaluate_response_body(scout_mock, :differs => "Hello!")
+      refute SubjectBody.evaluate_response_body(scout_stub, :differs => "Hello!")
     end
   end
 
   describe ".evaluate_response_body with multiple rules" do
     it "should return true when all rules matches" do
       rules = {:differs => 'omg', :match => /ll/}
-      assert SubjectBody.evaluate_response_body(scout_mock, rules)
+      assert SubjectBody.evaluate_response_body(scout_stub, rules)
     end
 
     it "should return false when there are no matches" do
       rules = {:equals => 'omg', :not_match => /ll/}
-      refute SubjectBody.evaluate_response_body(scout_mock, rules)
+      refute SubjectBody.evaluate_response_body(scout_stub, rules)
     end
 
     it "should return false when at least one rule doesn't match" do
       rules = {:equals => 'Hello!', :match => /Hell/, :differs => 'Hello!'}
-      refute SubjectBody.evaluate_response_body(scout_mock, rules)
+      refute SubjectBody.evaluate_response_body(scout_stub, rules)
     end
   end
 
@@ -81,9 +81,7 @@ describe Outpost::Expectations::ResponseBody do
   end
 
   private
-  def scout_mock
-    @scout_mock ||= OpenStruct.new.tap do |scout_mock|
-      scout_mock.response_body = 'Hello!'
-    end
+  def scout_stub
+    build_stub(:response_body => 'Hello!')
   end
 end
