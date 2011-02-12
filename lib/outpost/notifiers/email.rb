@@ -31,7 +31,7 @@ module Outpost
 
       # Issues a notification through email. This is a callback, called by
       # an Outpost instance.
-      # @param [Outpost::DSL, #read] outpost an instance of an outpost, containing
+      # @param [Outpost::Application, #read] outpost an instance of an outpost, containing
       #   latest status, messages and reports that can be queried to build
       #   a notification message.
       def notify(outpost)

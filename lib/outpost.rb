@@ -1,6 +1,6 @@
 
 # Outpost definition
-require 'outpost/dsl'
+require 'outpost/application'
 require 'outpost/report'
 
 # Scout definition

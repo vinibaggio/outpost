@@ -2,7 +2,7 @@ require 'test_helper'
 
 require 'outpost/scouts/http'
 
-describe "basic DSL integration test" do
+describe "basic application integration test" do
   before(:each) do
     @server = Server.new
     @server.boot(TestApp)
@@ -12,28 +12,28 @@ describe "basic DSL integration test" do
     end
   end
 
-  class ExampleSuccess < Outpost::DSL
+  class ExampleSuccess < Outpost::Application
     using Outpost::Scouts::Http => 'master http server' do
       options :host => 'localhost', :port => 9595
       report :up, :response_code => 200
     end
   end
 
-  class ExampleFailure < Outpost::DSL
+  class ExampleFailure < Outpost::Application
     using Outpost::Scouts::Http => 'master http server' do
       options :host => 'localhost', :port => 9595, :path => '/fail'
       report :up, :response_code => 200
     end
   end
 
-  class ExampleBodyFailure < Outpost::DSL
+  class ExampleBodyFailure < Outpost::Application
     using Outpost::Scouts::Http => 'master http server' do
       options :host => 'localhost', :port => 9595, :path => '/fail'
       report :down, :response_body => {:equals => 'Omg fail'}
     end
   end
 
-  class ExampleBodySuccess < Outpost::DSL
+  class ExampleBodySuccess < Outpost::Application
     using Outpost::Scouts::Http => 'master http server' do
       options :host => 'localhost', :port => 9595, :path => '/'
       report :up, :response_body => {:match => /Up/}

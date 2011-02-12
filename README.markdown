@@ -36,7 +36,7 @@ To create your Outposts, you must require 'outpost'. You also need to include
     require 'outpost'
     require 'outpost/scouts'
 
-    class Bla < Outpost::DSL
+    class Bla < Outpost::Application
       using Outpost::Scouts::Http => "web page" do
         options :host => 'localhost', :port => 3000
         report :up, :response_code => 200
@@ -55,7 +55,7 @@ Consider the following example:
     require 'outpost'
     require 'outpost/scouts'
 
-    class HttpOutpostExample < Outpost::DSL
+    class HttpOutpostExample < Outpost::Application
       using Outpost::Scouts::Http => "web page" do
         options :host => 'localhost', :port => 3000
         report :up, :response_code => 200
@@ -74,7 +74,7 @@ reporting "down" in that case).
 ## Outpost
 
 Outpost is the description of the system and provides a DSL to do it. 
-Check "How it works" section for an example, or check the [integration tests](https://github.com/vinibaggio/outpost/blob/master/test/integration/basic_dsl_test.rb)
+Check "How it works" section for an example, or check the [integration tests](https://github.com/vinibaggio/outpost/blob/master/test/integration/basic_application_test.rb)
 for more.
 
 ## Scout
@@ -163,7 +163,7 @@ system administrator:
     require 'outpost/scouts'
     require 'outpost/notifiers'
 
-    class HttpOutpostExample < Outpost::DSL
+    class HttpOutpostExample < Outpost::Application
       notify Outpost::Notifiers::Email, {
         :from => 'outpost@example.com',
         :to   => 'sleep_deprived_admin@example.com'

@@ -2,7 +2,7 @@ require 'test_helper'
 
 require 'outpost/scouts'
 
-describe "using more complex DSL integration test" do
+describe "using more complex application integration test" do
   before(:each) do
     @server = Server.new
     @server.boot(TestApp)
@@ -12,7 +12,7 @@ describe "using more complex DSL integration test" do
     end
   end
 
-  class ExamplePingAndHttp < Outpost::DSL
+  class ExamplePingAndHttp < Outpost::Application
     using Outpost::Scouts::Http => 'master http server' do
       options :host => 'localhost', :port => 9595, :path => '/'
       report :up, :response_body => {:match => /Up/}
@@ -24,7 +24,7 @@ describe "using more complex DSL integration test" do
     end
   end
 
-  class ExampleOneFailingOnePassing < Outpost::DSL
+  class ExampleOneFailingOnePassing < Outpost::Application
     using Outpost::Scouts::Http => 'master http server' do
       options :host => 'localhost', :port => 9595, :path => '/'
       report :up, :response_body => {:match => /Up/}
@@ -36,7 +36,7 @@ describe "using more complex DSL integration test" do
     end
   end
 
-  class ExampleAllFailing < Outpost::DSL
+  class ExampleAllFailing < Outpost::Application
     using Outpost::Scouts::Http => 'master http server' do
       options :host => 'localhost', :port => 9595, :path => '/fail'
       report :up, :response_body => {:match => /Up/}

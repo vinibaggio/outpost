@@ -1,6 +1,6 @@
 require 'test_helper'
 
-describe Outpost::DSL do
+describe Outpost::Application do
   class ScoutMock
     class << self
       attr_accessor :status
@@ -22,7 +22,7 @@ describe Outpost::DSL do
     end
   end
 
-  class ExampleOne < Outpost::DSL
+  class ExampleOne < Outpost::Application
     notify NotifierMock, :email => 'mail@example.com'
 
     using ScoutMock => 'master http server' do

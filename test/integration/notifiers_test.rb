@@ -4,7 +4,7 @@ require 'outpost/scouts'
 require 'outpost/notifiers'
 
 describe "using notifiers" do
-  class ExampleMailNotifier < Outpost::DSL
+  class ExampleMailNotifier < Outpost::Application
     notify Outpost::Notifiers::Email, {
       :from    => 'outpost@example.com',
       :to      => 'sleep_deprived_admin@example.com',

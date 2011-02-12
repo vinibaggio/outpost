@@ -3,7 +3,7 @@ module Outpost
   # the basic DSL for you to configure the monitoring of your services.
   # Example:
   #
-  #  class ExampleSuccess < Outpost::DSL
+  #  class ExampleSuccess < Outpost::Application
   #    name "Example"
   #    using Outpost::Scouts::Http => 'master http server' do
   #      options :host => 'localhost', :port => 9595
@@ -12,7 +12,7 @@ module Outpost
   #  end
   #
   # @abstract
-  class DSL
+  class Application
     class << self
       # Returns all the registered scouts.
       attr_reader :scouts
