@@ -12,13 +12,13 @@ describe Outpost::Scouts::Http do
   end
 
   before(:each) do
-    config_stub = config_stub(:host => 'localhost')
+    config_stub = config_stub(:host => 'localhost', :http_class => NetHttpStub)
     @subject    = Outpost::Scouts::Http.new("description", config_stub)
   end
 
   it "should get the response code and response body" do
     NetHttpStub.response { response_stub('200', 'Body') }
-    @subject.execute(NetHttpStub)
+    @subject.execute
 
     assert_equal 200   , @subject.response_code
     assert_equal 'Body', @subject.response_body
@@ -26,7 +26,7 @@ describe Outpost::Scouts::Http do
 
   it "should set response code and body as nil when connection refused" do
     NetHttpStub.response { raise Errno::ECONNREFUSED }
-    @subject.execute(NetHttpStub)
+    @subject.execute
 
     refute @subject.response_code
     refute @subject.response_body

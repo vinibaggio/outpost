@@ -1,4 +1,5 @@
 module Outpost
+  # Provides the DSL used to configure Scouts in Outposts.
   class ScoutConfig
     attr_reader :options, :reports
 
@@ -7,8 +8,9 @@ module Outpost
       @options = {}
     end
 
-    # Reads/writes any options. It will passed
-    # down to the scout.
+    # Reads/writes any options. It will passed down to the Scout.
+    # @param [Object] args Any argument that will be passed to the Scout.
+    # Rreturn [Object] The associated option
     def options(args=nil)
       if args.nil?
         @options
@@ -26,7 +28,7 @@ module Outpost
     #   status = 200
     #   params = {:response_code => 200}
     #
-    #   gets stored as:
+    # gets stored as:
     #    {:response_code => 200} = up
     def report(status, params)
       @reports[params] = status

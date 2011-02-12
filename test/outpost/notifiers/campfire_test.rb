@@ -48,9 +48,15 @@ describe Outpost::Notifiers::Campfire do
 
       CampfireMock.mock = campfire_room_mock
 
-      params = {:token => '123', :subdomain => '123', :room => '123'}
+      params = {
+        :token             => '123',
+        :subdomain         => '123',
+        :room              => '123',
+        :campfire_notifier => CampfireMock
+      }
+
       campfire = Outpost::Notifiers::Campfire.new(params)
-      campfire.notify(outpost_stub, CampfireMock)
+      campfire.notify(outpost_stub)
 
       campfire_room_mock.verify
     end
