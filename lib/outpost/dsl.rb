@@ -24,6 +24,7 @@ module Outpost
       #
       # @param [Hash{Scout => String}, #read] scout_description A hash
       #   containing Scout class as key and its description as a value.
+      #
       # @yield Block to be evaluated to configure the current {Scout}.
       def using(scout_description, &block)
         @scouts ||= Hash.new { |h, k| h[k] = {} }
@@ -39,7 +40,7 @@ module Outpost
 
       # Register a notifier class in the list of notifications.
       #
-      # @param [{Class}, #read] class A class that will be used to issue
+      # @param [Class, #read] class A class that will be used to issue
       #   a notification. The class must accept a configuration hash in the
       #   constructor and also implement a #notify method that will receive an
       #   outpost instance. See {Outpost::Notifiers::Email} for an example.
@@ -53,6 +54,7 @@ module Outpost
 
       # Set the name of the scout. Can be used by notifiers in order to have
       # a better description of the service in question.
+      #
       # @param [String, #read] name The name to be given to a Outpost-based
       #   class.
       def name(val=nil)
@@ -77,7 +79,7 @@ module Outpost
     end
 
     # Execute all the scouts associated with an Outpost-based class and returns
-    # either :up or :down, depending of the results.
+    # either :up or :down, depending on the results.
     def run
       @reports = self.class.scouts.map do |scout, options|
         run_scout(scout, options)
@@ -111,11 +113,15 @@ module Outpost
 
     # Returns the name of an Outpost-based class or the class name itself if
     # not set.
+    #
+    # @return [String] The name of the Outpost
     def name
       self.class.name || self.class.to_s
     end
 
     # Returns the messages of the latest service check.
+    #
+    # @return [Array<String>] An array containing all report messages.
     def messages
       reports.map { |r| r.to_s }
     end
