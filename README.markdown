@@ -20,7 +20,7 @@ So, summing it all up, Nagios in Ruby, much cooler!
 
 ## Information
 
-* (Rdoc)[http://rdoc.info/github/vinibaggio/outpost/master/frames]
+* [Rdoc](http://rdoc.info/github/vinibaggio/outpost/master/frames)
 
 ## Installing
 
