@@ -1,0 +1,16 @@
+
+== 0.2
+* Features
+ * Adding support for Notifications (Email and Campfire)
+ * RDoc documentation
+ * Refactoring, tests and cleanups
+
+* Deprecations
+ * Renaming Outpost::DSL to Outpost::Application
+
+* Bug Fixes
+ * Fixing Rake task to publish the gem (by github.com/ManuelKiessling)
+ * HTTP Scout now fails when it is not able to connect to the server
+
+== 0.1
+  * Initial release
