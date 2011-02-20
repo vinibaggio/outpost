@@ -19,6 +19,13 @@ describe "basic application integration test" do
     end
   end
 
+  class ExampleWarning < Outpost::Application
+    using Outpost::Scouts::Http => 'master http server' do
+      options :host => 'localhost', :port => 9595, :path => '/warning'
+      report :warning, :response_code => 402
+    end
+  end
+
   class ExampleFailure < Outpost::Application
     using Outpost::Scouts::Http => 'master http server' do
       options :host => 'localhost', :port => 9595, :path => '/fail'
@@ -40,8 +47,19 @@ describe "basic application integration test" do
     end
   end
 
+  class ExampleBodyWarning < Outpost::Application
+    using Outpost::Scouts::Http => 'master http server' do
+      options :host => 'localhost', :port => 9595, :path => '/warning'
+      report :warning, :response_body => {:equals => 'Omg need payment'}
+    end
+  end
+
   it "should report up when everything's ok" do
     assert_equal :up, ExampleSuccess.new.run
+  end
+
+  it "should report warning when there's a warning" do
+    assert_equal :warning, ExampleWarning.new.run
   end
 
   it "should report failure when something's wrong" do
@@ -50,6 +68,10 @@ describe "basic application integration test" do
 
   it "should report success when body is okay" do
     assert_equal :up, ExampleBodySuccess.new.run
+  end
+
+  it "should report success when body have a warning" do
+    assert_equal :warning, ExampleBodyWarning.new.run
   end
 
   it "should report failure when body is wrong" do

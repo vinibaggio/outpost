@@ -8,4 +8,8 @@ class TestApp < Sinatra::Base
   get '/fail' do
     [500, 'Omg fail']
   end
+
+  get '/warning' do
+    [402, 'Omg need payment']
+  end
 end
