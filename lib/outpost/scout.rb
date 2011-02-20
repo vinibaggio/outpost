@@ -90,7 +90,7 @@ module Outpost
     # Executes the Scout and go through all the registered expectations to find
     # out all expectations that match and return the associated status.
     #
-    # @return [Symbol] the current status of the Scout (:up, :down)
+    # @return [Symbol] the current status of the Scout (:up, :down, :warning)
     # @raise [NotImplementedError] raised when a configured expectation was not
     #   registered in the Scout.
     def run
@@ -100,7 +100,7 @@ module Outpost
       # value.
       # Example: {:response_time => 200}
       #
-      # status is the status (:up or :down, for example) that will be returned
+      # status is the status (:up, :down or :warning, for example) that will be returned
       # in case the expectation match current system status.
       @config.reports.each do |response_pair, status|
         response_pair.each do |expectation, value|
