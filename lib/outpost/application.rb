@@ -58,11 +58,8 @@ module Outpost
       # @param [String, #read] name The name to be given to a Outpost-based
       #   class.
       def name(val=nil)
-        if val
-          @name = val
-        else
-          @name
-        end
+        @name = val if val
+        @name
       end
     end
 
