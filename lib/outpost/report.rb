@@ -16,6 +16,7 @@ module Outpost
     # @return [Symbol] the final status to be considered.
     def self.summarize(status_list)
       return :down if status_list.empty? || status_list.include?(:down)
+      return :warning if status_list.include?(:warning)
       return :up
     end
 
