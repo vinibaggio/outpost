@@ -106,6 +106,26 @@ describe Outpost::Application do
     end
   end
 
+  describe "#warning?" do
+    before(:each) do
+      @outpost = ExampleOne.new
+    end
+
+    it "should return true when last status is warning" do
+      ScoutMock.status = :warning
+      @outpost.run
+
+      assert @outpost.warning?
+    end
+
+    it "should return false when last status isn't warning" do
+      ScoutMock.status = :up
+      @outpost.run
+
+      refute @outpost.warning?
+    end
+  end
+
   describe "#down?" do
     before(:each) do
       @outpost = ExampleOne.new

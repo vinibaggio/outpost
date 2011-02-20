@@ -106,6 +106,11 @@ module Outpost
       @last_status == :up
     end
 
+    # Returns true if the last status is :warning
+    def warning?
+      @last_status == :warning
+    end
+
     # Returns true if the last status is :down
     def down?
       @last_status == :down
