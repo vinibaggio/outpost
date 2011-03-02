@@ -36,6 +36,30 @@ describe "using more complex application integration test" do
     end
   end
 
+  class ExampleOneWarningOnePassing < Outpost::Application
+    using Outpost::Scouts::Http => 'master http server' do
+      options :host => 'localhost', :port => 9595, :path => '/'
+      report :up, :response_body => {:match => /Up/}
+    end
+
+    using Outpost::Scouts::Http => 'master http server' do
+      options :host => 'localhost', :port => 9595, :path => '/warning'
+      report :warning, :response_code => 402
+    end
+  end
+
+  class ExampleOneWarningOneFailing < Outpost::Application
+    using Outpost::Scouts::Http => 'master http server' do
+      options :host => 'localhost', :port => 9595, :path => '/warning'
+      report :warning, :response_code => 402
+    end
+
+    using Outpost::Scouts::Ping => 'load balancer' do
+      options :host => 'localhost'
+      report :up, :response_time => {:less_than => 0}
+    end
+  end
+
   class ExampleAllFailing < Outpost::Application
     using Outpost::Scouts::Http => 'master http server' do
       options :host => 'localhost', :port => 9595, :path => '/fail'
@@ -52,8 +76,13 @@ describe "using more complex application integration test" do
     assert_equal :up, ExamplePingAndHttp.new.run
   end
 
+  it "should report warning when at least one scout reports warning" do
+    assert_equal :warning, ExampleOneWarningOnePassing.new.run
+  end
+
   it "should report down when at least one scout reports down" do
     assert_equal :down, ExampleOneFailingOnePassing.new.run
+    assert_equal :down, ExampleOneWarningOneFailing.new.run
   end
 
   it "should report down when all are down" do
