@@ -1,3 +1,5 @@
+* Features
+ * Support for :warning status (by github.com/sryche)
 
 == 0.2
 * Features
