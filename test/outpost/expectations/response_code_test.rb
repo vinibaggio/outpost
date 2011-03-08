@@ -36,6 +36,14 @@ describe Outpost::Expectations::ResponseCode do
       SubjectCode.evaluation_method
   end
 
+  it "should return true when response code is included in the list" do
+    assert SubjectCode.evaluate_response_code(scout_stub, [200, 301])
+  end
+
+  it "should refute when response code is not included in the list" do
+    refute SubjectCode.evaluate_response_code(scout_stub, [500, 503])
+  end
+
   private
   def scout_stub
     build_stub(:response_code => 200)
