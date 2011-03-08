@@ -1,5 +1,6 @@
 * Features
  * Support for :warning status (by github.com/sryche)
+ * Subclassing Outpost::Application is no longer required.
 
 == 0.2
 * Features

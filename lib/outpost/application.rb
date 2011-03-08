@@ -11,14 +11,31 @@ module Outpost
   #    end
   #  end
   #
-  # @abstract
+  # The above example will set templates and every new instance of
+  # ExampleSuccess will have the same behavior. But all the methods
+  # are available to instances, so it is also possible to create Outpost
+  # applications as the following example:
+  #
+  #  my_outpost = Outpost::Application.new
+  #  my_outpost.name = 'Example'
+  #
+  #  my_outpost.using(Outpost::Scouts::Http => 'master http server') do
+  #    options :host => 'localhost', :port => 9595
+  #    report :up, :response_code => 200
+  #  end
   class Application
     class << self
-      # Returns all the registered scouts.
-      attr_reader :scouts
+      def scout_templates
+        @scout_templates || []
+      end
 
-      # Returns all the registered notifiers.
-      attr_reader :notifiers
+      def notifier_templates
+        @notifier_templates || []
+      end
+
+      def name_template
+        @name_template || self.to_s
+      end
 
       # Register a scout in the list of scouts.
       #
@@ -27,15 +44,11 @@ module Outpost
       #
       # @yield Block to be evaluated to configure the current {Scout}.
       def using(scout_description, &block)
-        @scouts ||= Hash.new { |h, k| h[k] = {} }
-
-        config = ScoutConfig.new
-        config.instance_eval(&block)
-
-        scout_description.each do |scout, description|
-          @scouts[scout][:description] = description
-          @scouts[scout][:config]      = config
-        end
+        @scout_templates ||= []
+        @scout_templates << {
+          :scout_description => scout_description,
+          :block => block
+        }
       end
 
       # Register a notifier class in the list of notifications.
@@ -48,8 +61,8 @@ module Outpost
       # @param [Hash, #read] options Options that will be used to configure the
       #   notification class.
       def notify(notifier, options={})
-        @notifiers           ||= {}
-        @notifiers[notifier]   = options
+        @notifier_templates ||= []
+        @notifier_templates << {:notifier => notifier, :options => options}
       end
 
       # Set the name of the scout. Can be used by notifiers in order to have
@@ -58,27 +71,64 @@ module Outpost
       # @param [String, #read] name The name to be given to a Outpost-based
       #   class.
       def name(val=nil)
-        @name = val if val
-        @name
+        @name_template = val if val
+        @name_template
       end
     end
 
     # Returns the status of the last service check or nil if it didn't happen.
     attr_reader :last_status
 
-    # Returns a list of {Report} containing the last results of the last check.
+    # Returns a list of {Report} containing the last r])ults of the last check.
     attr_reader :reports
+
+    # Returns all the registered scouts.
+    attr_reader :scouts
+
+    # Returns all the registered notifiers.
+    attr_reader :notifiers
+
+    # Reader/setter for the name of this scout
+    attr_accessor :name
 
     # New instance of a Outpost-based class.
     def initialize
       @reports     = []
       @last_status = nil
+      @scouts      = Hash.new { |h, k| h[k] = {} }
+      @notifiers   = {}
+      @name        = self.class.name_template
+
+      # Register scouts
+      self.class.scout_templates.each do |template|
+        add_scout(template[:scout_description], &template[:block])
+      end
+
+      self.class.notifier_templates.each do |template|
+        add_notifier(template[:notifier], template[:options])
+      end
+    end
+
+    # @see Application#using
+    def add_scout(scout_description, &block)
+      config = ScoutConfig.new
+      config.instance_eval(&block)
+
+      scout_description.each do |scout, description|
+        @scouts[scout][:description] = description
+        @scouts[scout][:config]      = config
+      end
+    end
+
+    # @see Application#notify
+    def add_notifier(notifier_name, options)
+      @notifiers[notifier_name] = options
     end
 
     # Execute all the scouts associated with an Outpost-based class and returns
     # either :up or :down, depending on the results.
     def run
-      @reports = self.class.scouts.map do |scout, options|
+      @reports = scouts.map do |scout, options|
         run_scout(scout, options)
       end
 
@@ -90,7 +140,7 @@ module Outpost
     # Runs all notifications associated with an Outpost-based class.
     def notify
       if reports.any?
-        self.class.notifiers.each do |notifier, options|
+        @notifiers.each do |notifier, options|
           # .dup is NOT reliable
           options_copy = Marshal.load(Marshal.dump(options))
           notifier.new(options_copy).notify(self)
@@ -117,9 +167,6 @@ module Outpost
     # not set.
     #
     # @return [String] The name of the Outpost
-    def name
-      self.class.name || self.class.to_s
-    end
 
     # Returns the messages of the latest service check.
     #

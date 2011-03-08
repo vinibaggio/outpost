@@ -32,7 +32,7 @@ describe Outpost::Application do
   end
 
   before(:each) do
-    @scouts = ExampleOne.scouts
+    @scouts = ExampleOne.new.scouts
   end
 
   it "should create correct scout description" do
@@ -47,9 +47,37 @@ describe Outpost::Application do
   end
 
   it "should create notifiers configuration" do
-    notifiers = ExampleOne.notifiers
+    notifiers = ExampleOne.new.notifiers
     assert_equal({NotifierMock => {:email => 'mail@example.com'}}, notifiers)
   end
+
+  describe "#add_scout" do
+    before(:each) do
+      ScoutMock.status = :up
+    end
+
+    it "should be able to create scouts programatically" do
+      outpost = create_outpost
+
+      assert_equal :up, outpost.run
+    end
+  end
+
+  describe "#add_notifier" do
+    before(:each) do
+      ScoutMock.status = :up
+    end
+
+    it "should be able to create notifications programatically" do
+      outpost = create_outpost
+      outpost.run
+      outpost.notify
+
+      assert_equal "ScoutMock: 'master http server' is reporting up.",
+        NotifierMock.last_messages.first
+    end
+  end
+
 
   describe "#run" do
     it "should return up when scouts return up" do
@@ -84,6 +112,7 @@ describe Outpost::Application do
 
       refute NotifierMock.last_messages
     end
+
   end
 
   describe "#up?" do
@@ -172,6 +201,18 @@ describe Outpost::Application do
 
       assert_equal "ScoutMock: 'master http server' is reporting up.",
         @outpost.messages.first
+    end
+  end
+
+  private
+
+  def create_outpost
+    Outpost::Application.new.tap do |outpost|
+      outpost.add_scout ScoutMock => 'master http server' do
+        report :up, :response_code => 200
+      end
+
+      outpost.add_notifier NotifierMock, :email => 'mail@example.com'
     end
   end
 end
