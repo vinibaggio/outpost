@@ -2,6 +2,12 @@ require 'rack/handler/thin'
 require 'net/http'
 
 class Server
+  def wait_until_booted
+    while !responsive?
+      sleep 0.1
+    end
+  end
+
   # Got it from Capybara, but simplified it a bit.
   # lib/capybara/server.rb
   def responsive?

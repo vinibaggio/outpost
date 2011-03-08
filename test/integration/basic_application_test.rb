@@ -6,10 +6,7 @@ describe "basic application integration test" do
   before(:each) do
     @server = Server.new
     @server.boot(TestApp)
-
-    while !@server.responsive?
-      sleep 0.1
-    end
+    @server.wait_until_booted
   end
 
   class ExampleSuccess < Outpost::Application

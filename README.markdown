@@ -73,7 +73,7 @@ reporting "down" in that case).
 
 ## Outpost
 
-Outpost is the description of the system and provides a DSL to do it. 
+Outpost is the description of the system and provides a DSL to do it.
 Check "How it works" section for an example, or check the [integration tests](https://github.com/vinibaggio/outpost/blob/master/test/integration/basic_application_test.rb)
 for more.
 
@@ -123,7 +123,7 @@ to get Scout's output and evaluate it, in order to determine a status.
 They must be registered into each Scout that wish to support different types
 of expectations. You can supply a block or an object that respond to #call
 and return true if any of the rules match. It will receive an instance
-of the scout (so you can query current system state) as the first parameter 
+of the scout (so you can query current system state) as the first parameter
 and the state defined in the #report method as the second.
 
 So you can easily create your own expectation. Let's recreate the :response\_code in
@@ -181,6 +181,23 @@ system administrator:
     # Will send an email to the poor sleep-deprived Sys Admin if the system is
     # down.
     outpost.notify if outpost.down?
+
+## Creating Outpost applications programatically
+
+It is also possible to create Outposts without having to subclass it. Use the
+methods #add_scout and #add_notifier and you're set:
+
+    outpost = Outpost::Application.new
+    
+    outpost.add_scout Outpost::Scouts::Http => 'master http server' do
+      options :host => 'localhost', :port => 9595
+      report :up, :response_code => 200
+    end
+
+    outpost.run
+
+This is good when you want to have some sort of template (by inheriting from
+Outpost::Application) and then configure things as you go.
 
 ## TODO
 

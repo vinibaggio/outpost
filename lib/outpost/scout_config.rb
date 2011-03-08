@@ -12,11 +12,8 @@ module Outpost
     # @param [Object] args Any argument that will be passed to the Scout.
     # Rreturn [Object] The associated option
     def options(args=nil)
-      if args.nil?
-        @options
-      else
-        @options = args
-      end
+      @options = args if args
+      @options
     end
 
     # Reads reporting as:
