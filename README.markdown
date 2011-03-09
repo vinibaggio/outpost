@@ -18,9 +18,10 @@ It should report a status per declared system.
 The idea is to make a reliable framework for the Ruby developer to create his own monitoring rules.
 So, summing it all up, Nagios in Ruby, much cooler!
 
-## Information
+## Information and examples
 
 * [Rdoc](http://rdoc.info/github/vinibaggio/outpost/master/frames)
+* [outpost-web](http://github.com/vinibaggio/outpost-web)
 
 ## Installing
 
