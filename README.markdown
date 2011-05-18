@@ -37,16 +37,16 @@ To create your Outposts, you must require 'outpost'. You also need to include
     require 'outpost'
     require 'outpost/scouts'
 
-    class Bla < Outpost::Application
+    class Monitor < Outpost::Application
       using Outpost::Scouts::Http => "web page" do
         options :host => 'localhost', :port => 3000
         report :up, :response_code => 200
       end
     end
 
-    a = Bla.new
-    a.run
-    p a.messages # => ["Outpost::Scouts::Http: 'web page' is reporting up."]
+    monitor = Monitor.new
+    monitor.run
+    p monitor.messages # => ["Outpost::Scouts::Http: 'web page' is reporting up."]
 
 
 ## How it works
