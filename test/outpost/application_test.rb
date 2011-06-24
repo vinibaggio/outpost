@@ -5,8 +5,10 @@ describe Outpost::Application do
     class << self
       attr_accessor :status
     end
+
     def initialize(*args); end
     def run              ; self.class.status ; end
+    def report_data;     ; {} ; end
   end
 
   class NotifierMock
@@ -77,7 +79,6 @@ describe Outpost::Application do
         NotifierMock.last_messages.first
     end
   end
-
 
   describe "#run" do
     it "should return up when scouts return up" do
@@ -202,6 +203,10 @@ describe Outpost::Application do
       assert_equal "ScoutMock: 'master http server' is reporting up.",
         @outpost.messages.first
     end
+  end
+
+  describe "#reports" do
+
   end
 
   private

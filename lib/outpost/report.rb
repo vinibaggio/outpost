@@ -20,12 +20,13 @@ module Outpost
       return :up
     end
 
-    attr_reader :name, :description, :status
+    attr_reader :name, :description, :status, :data
 
     def initialize(params)
       @name        = params[:name]
       @description = params[:description]
       @status      = params[:status]
+      @data        = params[:data]
     end
 
     def to_s
