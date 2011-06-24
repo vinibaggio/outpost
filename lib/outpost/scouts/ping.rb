@@ -19,7 +19,7 @@ module Outpost
     class Ping < Outpost::Scout
       extend Outpost::Expectations::ResponseTime
       attr_reader :response_time
-
+      report_data :response_time
 
       # Configure the scout with given options.
       # @param [Hash] Options to setup the scout

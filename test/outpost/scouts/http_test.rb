@@ -24,6 +24,14 @@ describe Outpost::Scouts::Http do
     assert_equal 'Body', @subject.response_body
   end
 
+  it "should set the reporting data accordingly" do
+    NetHttpStub.response { response_stub('200', 'Body') }
+    @subject.run
+
+    assert_equal 200   , @subject.report_data[:response_code]
+    assert_equal 'Body', @subject.report_data[:response_body]
+  end
+
   it "should set response code and body as nil when connection refused" do
     NetHttpStub.response { raise Errno::ECONNREFUSED }
     @subject.execute
