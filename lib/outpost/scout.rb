@@ -18,6 +18,11 @@ module Outpost
   #     scout.response_code == code
   #   end
   #
+  # Scouts may also report specific data. This is useful to complement
+  # status reporting with the data received from the measurement. After the
+  # scout is run, each report data method will be executed and its calue will be
+  # added to the resulting report.
+  #
   # @example an example of a Scout that parses the HTTP response code
   #   module Outpost
   #     module Scouts
@@ -40,10 +45,40 @@ module Outpost
   #     end
   #   end
   #
+  # @example an example of a Scout that reports the duration of a HTTP request
+  #   module Outpost
+  #     module Scouts
+  #       class TimedHttp < Outpost::Scout
+  #         expect(:response_code) { |scout,code| scout.response_code == code }
+  #
+  #         attr_reader :response_code, :response_time
+  #         report_data :response_time
+  #
+  #         def setup(options)
+  #           @host = options[:host]
+  #           @port = options[:port] || 80
+  #           @path = options[:path] || '/'
+  #         end
+  #
+  #         def execute
+  #           previous_time = Time.now
+  #
+  #           response = Net::HTTP.get_response(@host, @path, @port)
+  #           @response_code = response.code.to_i
+  #
+  #           @response_time = Time.now - response_time
+  #         end
+  #       end
+  #     end
+  #   end
+  #
   # @abstract Subclasses must override {#setup} and {#execute} to be a valid
   #   Scout
   class Scout
+    attr_reader :report_data
+
     class << self
+      attr_reader :reporting_data_methods
 
       # Returns the hash of expectations, where the key is the name of the
       # expectation and the value is the callable Object (object that responds
@@ -51,7 +86,7 @@ module Outpost
       #
       # @return [Hash<Symbol, Object>]
       def expectations
-        @expectations ? @expectations.dup : []
+        @expectations ? @expectations.dup : {}
       end
 
       # Registers a new expectation into the Scout. If the callable does not
@@ -74,6 +109,16 @@ module Outpost
           raise ArgumentError, 'Object must respond to method #call to be a valid expectation.'
         end
       end
+
+      def reporting_data_methods
+        @reporting_data_methods ||= []
+        @reporting_data_methods
+      end
+
+      def report_data(*methods)
+        @reporting_data_methods ||= []
+        @reporting_data_methods += methods
+      end
     end
 
     # @param [String, #read] description A string containing a description of
@@ -83,6 +128,7 @@ module Outpost
     def initialize(description, config)
       @description = description
       @config      = config
+      @report_data = {}
 
       setup(config.options)
     end
@@ -115,7 +161,18 @@ module Outpost
         end
       end
 
+      gather_reporting_data
       Report.summarize(statuses)
+    end
+
+    def gather_reporting_data
+      self.class.reporting_data_methods.each do |method|
+        if respond_to?(method)
+          @report_data[method.to_sym] = send(method)
+        else
+          raise ArgumentError,  "Scout #{self.class.name} does not respond to ##{method} reporting data method"
+        end
+      end
     end
 
     # Called when the scout object is being constructed. Arguments can be
