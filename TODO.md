@@ -2,4 +2,4 @@
 
 * SSH Support
 * Daemon and scheduler
-* Better error reporting
+* Web dashboard
