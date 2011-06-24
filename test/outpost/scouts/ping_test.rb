@@ -27,6 +27,14 @@ describe Outpost::Scouts::Ping do
     refute subject.response_time
   end
 
+  it "should report the response time" do
+    config  = config_stub(:pinger => PingStub.new(true, 0.225))
+    subject = Outpost::Scouts::Ping.new "test", config
+    subject.run
+
+    assert_equal 225, subject.report_data[:response_time]
+  end
+
   private
 
   def config_stub(options={})

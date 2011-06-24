@@ -18,6 +18,7 @@ module Outpost
       extend Outpost::Expectations::ResponseBody
 
       attr_reader :response_code, :response_body
+      report_data :response_code, :response_body
 
       # Configure the scout with given options.
       # @param [Hash] Options to setup the scout

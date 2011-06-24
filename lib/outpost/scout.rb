@@ -148,15 +148,17 @@ module Outpost
       #
       # status is the status (:up, :down or :warning, for example) that will be returned
       # in case the expectation match current system status.
-      @config.reports.each do |response_pair, status|
-        response_pair.each do |expectation, value|
-          if self.class.expectations[expectation].nil?
-            message = "expectation '#{expectation}' wasn't implemented by #{self.class.name}"
-            raise NotImplementedError, message
-          end
+      if @config.reports.present?
+        @config.reports.each do |response_pair, status|
+          response_pair.each do |expectation, value|
+            if self.class.expectations[expectation].nil?
+              message = "expectation '#{expectation}' wasn't implemented by #{self.class.name}"
+              raise NotImplementedError, message
+            end
 
-          if self.class.expectations[expectation].call(self, value)
-            statuses << status
+            if self.class.expectations[expectation].call(self, value)
+              statuses << status
+            end
           end
         end
       end
