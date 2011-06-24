@@ -79,7 +79,7 @@ module Outpost
     # Returns the status of the last service check or nil if it didn't happen.
     attr_reader :last_status
 
-    # Returns a list of {Report} containing the last r])ults of the last check.
+    # Returns a list of {Report} containing the last results of the last check.
     attr_reader :reports
 
     # Returns all the registered scouts.
@@ -93,7 +93,7 @@ module Outpost
 
     # New instance of a Outpost-based class.
     def initialize
-      @reports     = []
+      @reports     = {}
       @last_status = nil
       @scouts      = Hash.new { |h, k| h[k] = {} }
       @notifiers   = {}
@@ -128,11 +128,11 @@ module Outpost
     # Execute all the scouts associated with an Outpost-based class and returns
     # either :up or :down, depending on the results.
     def run
-      @reports = scouts.map do |scout, options|
-        run_scout(scout, options)
+      scouts.map do |scout, options|
+        @reports[options[:description]] = run_scout(scout, options)
       end
 
-      statuses = @reports.map { |r| r.status }
+      statuses = @reports.map { |_, r| r.status }
 
       @last_status = Report.summarize(statuses)
     end
@@ -163,16 +163,11 @@ module Outpost
       @last_status == :down
     end
 
-    # Returns the name of an Outpost-based class or the class name itself if
-    # not set.
-    #
-    # @return [String] The name of the Outpost
-
     # Returns the messages of the latest service check.
     #
     # @return [Array<String>] An array containing all report messages.
     def messages
-      reports.map { |r| r.to_s }
+      reports.map { |_, r| r.to_s }
     end
 
     private
@@ -184,7 +179,8 @@ module Outpost
       params = {
         :name        => scout.name,
         :description => options[:description],
-        :status      => scout_instance.run
+        :status      => scout_instance.run,
+        :data        => scout_instance.report_data
       }
       Report.new(params)
     end
