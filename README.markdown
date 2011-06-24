@@ -110,6 +110,14 @@ method, where you can implement any kind of logic to test whether your system is
 or not. You may also include expectations in order to process the output of your system.
 For more information about expectations, check the section below.
 
+If you're interested in the data the Scouts got through a measurement, you can
+tell Outpost that it must save that data after the measurement is run. That way
+you can inquiry it for further analysis. This way, you can have Scouts without
+any expectations/reports, so you can collect data without telling if the system
+is either up or down. You can check an usage example in the [Reports
+integration
+test](https://github.com/vinibaggio/outpost/blob/master/test/integration/reporting_test.rb).
+
 ## Expectations
 
 Consider the following code snippet, taken from previous examples:
@@ -188,7 +196,7 @@ It is also possible to create Outposts without having to subclass it. Use the
 methods #add_scout and #add_notifier and you're set:
 
     outpost = Outpost::Application.new
-    
+
     outpost.add_scout Outpost::Scouts::Http => 'master http server' do
       options :host => 'localhost', :port => 9595
       report :up, :response_code => 200
