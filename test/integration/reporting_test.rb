@@ -31,9 +31,10 @@ describe "using only report data integration test" do
     http_report = @outpost.reports['master http server']
     ping_report = @outpost.reports[:load_balancer]
 
+    report_data = http_report.data
+
+    assert report_data.delete(:response_time) < 500
     assert_equal({:response_code => 200,
                   :response_body => 'Up and running!'}, http_report.data)
-
-    assert ping_report.data[:response_time] < 500
   end
 end

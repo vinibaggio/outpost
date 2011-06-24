@@ -16,9 +16,10 @@ module Outpost
     class Http < Outpost::Scout
       extend Outpost::Expectations::ResponseCode
       extend Outpost::Expectations::ResponseBody
+      extend Outpost::Expectations::ResponseTime
 
-      attr_reader :response_code, :response_body
-      report_data :response_code, :response_body
+      attr_reader :response_code, :response_body, :response_time
+      report_data :response_code, :response_body, :response_time
 
       # Configure the scout with given options.
       # @param [Hash] Options to setup the scout
@@ -38,12 +39,14 @@ module Outpost
       # Runs the scout, connecting to the host and getting the response code,
       # body and time.
       def execute
+        previous_time = Time.now
         response = @http_class.get_response(@host, @path, @port)
 
+        @response_time = (Time.now - previous_time) * 1000 # Miliseconds
         @response_code = response.code.to_i
         @response_body = response.body
       rescue SocketError, Errno::ECONNREFUSED
-        @response_code = @response_body = nil
+        @response_code = @response_body = @response_time = nil
       end
     end
   end
