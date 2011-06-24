@@ -11,6 +11,39 @@ describe Outpost::Scout do
     def execute(*args); end
   end
 
+  class ReportingScoutExample < Outpost::Scout
+    attr_accessor :response
+    report_data :translated_response_code
+    expect :response, lambda {|scout, status| scout.response == status }
+
+    def setup(*args); end
+    def execute(*args); end
+
+    def translated_response_code
+      "Page Not Found"
+    end
+  end
+
+  class BrokenScoutExample < Outpost::Scout
+    attr_accessor :response
+    report_data :reportive
+    expect :response, lambda {|scout, status| scout.response == status }
+
+    def setup(*args); end
+    def execute(*args); end
+  end
+
+  class MultipleReportsScoutExample < Outpost::Scout
+    attr_accessor :response
+    expect :response, lambda {|scout, status| scout.response == status }
+    def response_time; 10; end
+    def response_code; 200; end
+    def setup(*args); end
+    def execute(*args); end
+
+    report_data :response_time, :response_code
+  end
+
   it "should report up when status match" do
     scout = ScoutExample.new("a scout", config_mock)
     scout.response = true
@@ -73,6 +106,36 @@ describe Outpost::Scout do
       scout = ScoutExample.new("a scout", config)
       scout.run
     end
+  end
+
+  it "should complain when a scout does not respond to the method supplied" do
+    assert_raises(ArgumentError, 'Scout BrokenScoutExample does not respond to #reportive reporting method') do
+
+      scout = BrokenScoutExample.new("a scout", config_mock)
+      scout.run
+    end
+  end
+
+  it "should set the report data hash as empty when scout has not been run yet" do
+    scout = ReportingScoutExample.new("a scout", config_mock)
+    assert_equal({}, scout.report_data)
+  end
+
+  it "should fill the report data hash with data collected after being run" do
+    scout = ReportingScoutExample.new("a scout", config_mock)
+    scout.run
+
+    assert_equal({:translated_response_code => "Page Not Found"}, scout.report_data)
+  end
+
+  it "should accept multiple method names" do
+    scout = MultipleReportsScoutExample.new("a scout", config_mock)
+    scout.run
+
+    assert_equal({
+      :response_time => 10,
+      :response_code => 200
+    }, scout.report_data)
   end
 
   private
