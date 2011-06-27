@@ -1,3 +1,9 @@
+== 0.2.2
+* Features
+ * Using arrays in Response code
+* Bugfix
+ * Fixed failing test about messages not cleaning up properly in notifiers.
+
 == 0.2.1
 * Features
  * Support for :warning status (by github.com/sryche)
