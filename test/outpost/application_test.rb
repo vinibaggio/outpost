@@ -93,7 +93,7 @@ describe Outpost::Application do
   end
 
   describe "#notify" do
-    after(:each) do
+    before(:each) do
       NotifierMock.last_messages = nil
     end
 
