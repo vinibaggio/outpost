@@ -148,7 +148,7 @@ module Outpost
       #
       # status is the status (:up, :down or :warning, for example) that will be returned
       # in case the expectation match current system status.
-      if @config.reports.present?
+      if @config.reports && !@config.reports.empty?
         @config.reports.each do |response_pair, status|
           response_pair.each do |expectation, value|
             if self.class.expectations[expectation].nil?
