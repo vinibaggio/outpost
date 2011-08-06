@@ -1,3 +1,7 @@
+== 0.2.3
+* Bugfix
+ * Avoid using ActiveSupport methods
+
 == 0.2.2
 * Features
  * Using arrays in Response code
