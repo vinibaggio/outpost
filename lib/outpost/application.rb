@@ -95,7 +95,7 @@ module Outpost
     def initialize
       @reports     = {}
       @last_status = nil
-      @scouts      = Hash.new { |h, k| h[k] = {} }
+      @scouts      = []
       @notifiers   = {}
       @name        = self.class.name_template
 
@@ -115,8 +115,7 @@ module Outpost
       config.instance_eval(&block)
 
       scout_description.each do |scout, description|
-        @scouts[scout][:description] = description
-        @scouts[scout][:config]      = config
+        @scouts << [ scout, :description => description, :config => config ]
       end
     end
 
