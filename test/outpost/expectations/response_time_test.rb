@@ -60,6 +60,10 @@ describe Outpost::Expectations::ResponseTime do
       SubjectTime.evaluation_method
   end
 
+  it 'should fail correctly when response_time is nil' do
+    refute SubjectTime.evaluate_response_time(OpenStruct.new(:response_time => nil), { :less_than => 1 })
+  end
+
   private
   def scout_stub
     build_stub(:response_time => 300)
