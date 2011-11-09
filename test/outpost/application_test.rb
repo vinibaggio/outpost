@@ -38,12 +38,12 @@ describe Outpost::Application do
   end
 
   it "should create correct scout description" do
-    assert_equal(ScoutMock, @scouts.keys.first)
-    assert_equal('master http server', @scouts[ScoutMock][:description])
+    assert_equal(ScoutMock, @scouts.first.first)
+    assert_equal('master http server', @scouts.first.last[:description])
   end
 
   it "should create correct scout config" do
-    config = @scouts[ScoutMock][:config]
+    config = @scouts.first.last[:config]
     assert_equal({:host => 'localhost'}, config.options)
     assert_equal({{:response_code => 200} => :up}, config.reports)
   end
