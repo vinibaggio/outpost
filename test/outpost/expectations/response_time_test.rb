@@ -14,6 +14,12 @@ describe Outpost::Expectations::ResponseTime do
     extend Outpost::Expectations::ResponseTime
   end
 
+  describe ".evaluation_response_time with nil" do
+    it "should fail gracefully" do
+      refute SubjectTime.evaluate_response_time(scout_stub, :less_than => nil)
+    end
+  end
+
   describe ".evaluate_response_time with less_than" do
     it "should return true when it matches" do
       assert SubjectTime.evaluate_response_time(scout_stub, :less_than => 5000)

@@ -21,7 +21,7 @@ module Outpost
       # Method that will be used as an expectation to evaluate response time
       def evaluate_response_time(scout, rules)
         rules.all? do |rule, comparison|
-          scout.response_time.send(RESPONSE_TIME_MAPPING[rule], comparison)
+          comparison && scout.response_time.send(RESPONSE_TIME_MAPPING[rule], comparison)
         end
       end
     end
