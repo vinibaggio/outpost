@@ -34,16 +34,33 @@ describe Outpost::Application do
   end
 
   before(:each) do
-    @scouts = ExampleOne.new.scouts
+    @example = ExampleOne.new
+    @scouts = @example.scouts
   end
 
   it "should create correct scout description" do
-    assert_equal(ScoutMock, @scouts.first.first)
-    assert_equal('master http server', @scouts.first.last[:description])
+    scouts = @scouts[ScoutMock]
+
+    assert scouts
+    assert_equal('master http server', scouts.first[:description])
+  end
+
+  it "should store more than one scout description" do
+    @example.add_scout ScoutMock => 'slave http server' do
+      options :host => 'example.com'
+      report :up, :response_code => 200
+    end
+
+    descriptions = @example.scouts[ScoutMock].map { |options| options[:description] }
+
+    assert_equal(2, @example.scouts[ScoutMock].size)
+    assert_equal('master http server', descriptions.first)
+    assert_equal('slave http server', descriptions.last)
   end
 
   it "should create correct scout config" do
-    config = @scouts.first.last[:config]
+    config = @scouts[ScoutMock].first[:config]
+
     assert_equal({:host => 'localhost'}, config.options)
     assert_equal({{:response_code => 200} => :up}, config.reports)
   end

@@ -95,7 +95,7 @@ module Outpost
     def initialize
       @reports     = {}
       @last_status = nil
-      @scouts      = []
+      @scouts      = Hash.new { |h, k| h[k] = [] }
       @notifiers   = {}
       @name        = self.class.name_template
 
@@ -115,7 +115,10 @@ module Outpost
       config.instance_eval(&block)
 
       scout_description.each do |scout, description|
-        @scouts << [ scout, :description => description, :config => config ]
+        @scouts[scout] << {
+          :description => description,
+          :config => config
+        }
       end
     end
 
@@ -127,8 +130,10 @@ module Outpost
     # Execute all the scouts associated with an Outpost-based class and returns
     # either :up or :down, depending on the results.
     def run
-      scouts.map do |scout, options|
-        @reports[options[:description]] = run_scout(scout, options)
+      scouts.map do |scout, configurations|
+        configurations.each do |options|
+          @reports[options[:description]] = run_scout(scout, options)
+        end
       end
 
       statuses = @reports.map { |_, r| r.status }
