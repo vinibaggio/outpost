@@ -11,7 +11,7 @@ module Outpost
 
       # Method that will be used as an expectation to evaluate response code
       def evaluate_response_code(scout, response_code)
-        if response_code.is_a?(Array)
+        if response_code.is_a?(Array) || response_code.is_a?(Range)
           response_code.include?(scout.response_code)
         else
           scout.response_code == response_code.to_i
