@@ -5,6 +5,7 @@ group :test do
   gem 'net-ping', :require => false
   gem 'tinder',   :require => false
 
+  gem 'rake'
   gem 'thin'
   gem 'rack'
   gem 'sinatra'
