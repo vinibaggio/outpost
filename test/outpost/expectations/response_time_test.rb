@@ -16,7 +16,8 @@ describe Outpost::Expectations::ResponseTime do
 
   describe ".evaluation_response_time with nil" do
     it "should fail gracefully" do
-      refute SubjectTime.evaluate_response_time(scout_stub, :less_than => nil)
+      #this is common, as host can be not accessible for ping
+      refute SubjectTime.evaluate_response_time(build_stub(:response_time => nil), :less_than => 400)
     end
   end
 
