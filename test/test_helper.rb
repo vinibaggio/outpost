@@ -2,7 +2,7 @@ require 'rubygems'
 require 'bundler'
 Bundler.setup(:default, :test)
 
-require 'ruby-debug'
+require 'ruby-debug' unless RUBY_VERSION > '1.9'
 require 'ostruct'
 require 'minitest/spec'
 require 'minitest/autorun'
