@@ -10,7 +10,7 @@ describe Outpost::Scouts::Tcp do
     subject = Outpost::Scouts::Tcp.new "test", config
     subject.execute
 
-    assert subject.response_time < 1
+    assert subject.response_time < 100
   end
 
   it "should set the time to nil when it fails" do

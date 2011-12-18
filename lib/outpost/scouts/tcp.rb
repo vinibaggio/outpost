@@ -20,9 +20,10 @@ module Outpost
       def setup(options)
         host   = options[:host]
         port   = options[:port]
+        timeout= options[:timeout] || 3
         pinger = options[:pinger] || Net::Ping::TCP
 
-        @pinger = pinger.new(host, port)
+        @pinger = pinger.new(host, port, timeout)
       end
 
       # Runs the scout, pinging the host and getting the duration.
