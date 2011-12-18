@@ -44,6 +44,15 @@ describe Outpost::Expectations::ResponseCode do
     refute SubjectCode.evaluate_response_code(scout_stub, [500, 503])
   end
 
+  it "should return true when response code is included in the range" do
+    assert SubjectCode.evaluate_response_code(scout_stub, 200...300)
+  end
+
+  it "should refute when response code is not included in the range" do
+    refute SubjectCode.evaluate_response_code(scout_stub, 500..503)
+  end
+
+
   private
   def scout_stub
     build_stub(:response_code => 200)
