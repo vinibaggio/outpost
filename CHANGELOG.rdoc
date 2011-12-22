@@ -1,3 +1,16 @@
+== 0.2.4
+Special thanks to @brain-geek for an awesome job on Outpost! This release is his.
+
+* Features:
+ * Added TCP Scout [@brain-geek]
+ * Added support for ranges in HTTP response codes  [@brain-geek]
+* Bugfix:
+ * Fixing NoMethodError on unavailable host [@brain-geek]
+* Other:
+ * Travis CI support!
+ * Removing ruby-debug from dependency [@brain-geek]
+ * Making net-ping as outpost dependency [@brain-geek]
+
 == 0.2.3
 * Bugfix
  * Avoid using ActiveSupport methods
