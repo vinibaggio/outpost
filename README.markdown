@@ -1,5 +1,7 @@
 # Outpost
 
+Build status: [![Build Status](https://secure.travis-ci.org/vinibaggio/outpost.png)](http://travis-ci.org/vinibaggio/outpost)
+
 ## Features
 
 Outpost is a tool to monitor the state of your service (not server). What does it mean?
