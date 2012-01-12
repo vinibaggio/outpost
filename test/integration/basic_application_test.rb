@@ -3,12 +3,6 @@ require 'test_helper'
 require 'outpost/scouts/http'
 
 describe "basic application integration test" do
-  # before(:each) do
-  #   @server = Server.new
-  #   @server.boot(TestApp)
-  #   @server.wait_until_booted
-  # end
-
   class ExampleSuccess < Outpost::Application
     using Outpost::Scouts::Http => 'master http server' do
       options :host => 'localhost', :port => 9595

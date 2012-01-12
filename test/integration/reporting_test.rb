@@ -15,10 +15,6 @@ describe "using only report data integration test" do
   end
 
   before(:each) do
-    # @server = Server.new
-    # @server.boot(TestApp)
-    # @server.wait_until_booted
-
     @outpost = RetrieveServerData.new
     @outpost.run
   end

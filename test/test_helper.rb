@@ -8,8 +8,6 @@ require 'minitest/spec'
 require 'minitest/autorun'
 
 # Integration test helpers
-# require 'support/test_app'
-# require 'support/server'
 require 'support/stubs'
 require 'support/nothing_raised'
 

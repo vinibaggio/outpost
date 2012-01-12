@@ -2,10 +2,6 @@ require 'test_helper'
 
 describe Outpost::Scouts::Tcp do
   it "should set the time of ping in milliseconds" do
-    # @server = Server.new
-    # @server.boot(TestApp)
-    # @server.wait_until_booted
-
     cls = Class.new do
       def initialize(host, port, timeout)
       end
