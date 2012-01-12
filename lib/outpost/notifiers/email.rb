@@ -23,6 +23,7 @@ module Outpost
         @from    = options[:from]
         @to      = options[:to]
         @subject = options[:subject] || 'Outpost notification'
+        @delivery_method = options[:delivery_method] || []
 
         unless @from && @to
           raise ArgumentError, 'You need to set :from and :to to send emails.'
@@ -40,6 +41,8 @@ module Outpost
         mail.to      = @to
         mail.subject = @subject
         mail.body    = build_message(outpost)
+
+        mail.send(:delivery_method, *@delivery_method) unless @delivery_method.empty?
 
         mail.deliver
       end
