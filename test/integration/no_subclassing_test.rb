@@ -5,9 +5,9 @@ require 'outpost/notifiers/email'
 
 describe "creating outpost apps without subclassing" do
   before(:each) do
-    @server = Server.new
-    @server.boot(TestApp)
-    @server.wait_until_booted
+    # @server = Server.new
+    # @server.boot(TestApp)
+    # @server.wait_until_booted
 
     Mail.defaults do
       delivery_method :test

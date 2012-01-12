@@ -10,6 +10,8 @@ group :test do
   gem 'rack'
   gem 'sinatra'
 
+  gem 'fakeweb'
+
   gem 'minitest', '~> 2.0.2', :platforms => :ruby_18
   gem 'ruby-debug',           :platforms => :ruby_18
 

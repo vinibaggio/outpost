@@ -3,11 +3,11 @@ require 'test_helper'
 require 'outpost/scouts'
 
 describe "using more complex application integration test" do
-  before(:each) do
-    @server = Server.new
-    @server.boot(TestApp)
-    @server.wait_until_booted
-  end
+  # before(:each) do
+  #   @server = Server.new
+  #   @server.boot(TestApp)
+  #   @server.wait_until_booted
+  # end
 
   class ExamplePingAndHttp < Outpost::Application
     using Outpost::Scouts::Http => 'master http server' do
