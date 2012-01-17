@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'ostruct'
 
 describe Outpost::Scouts::Http do
   class NetHttpStub
@@ -7,6 +8,22 @@ describe Outpost::Scouts::Http do
 
       def get_response(*args)
         @response.call
+      end
+
+      def request_head(*args)
+        throw "Unexpected call"
+      end
+    end
+  end
+
+  class NetHttpHeadStub < NetHttpStub
+    class << self
+      def request_head(*args)
+        OpenStruct.new :code => 200, :body => 'Body'
+      end
+
+      def get_response(*args)
+        throw "Unexpected call"
       end
     end
   end
@@ -45,6 +62,16 @@ describe Outpost::Scouts::Http do
 
     refute @subject.response_code
     refute @subject.response_body
+  end
+
+  it "should make HEAD request if option is passed" do
+    config_stub = config_stub(:host => 'localhost', :http_class => NetHttpHeadStub, :request_head => true)
+    @subject    = Outpost::Scouts::Http.new("description", config_stub)
+
+    @subject.run
+
+    assert_equal 200   , @subject.response_code
+    assert_equal 'Body', @subject.response_body    
   end
 
   private
