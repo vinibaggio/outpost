@@ -40,6 +40,32 @@ describe Outpost::Notifiers::Email do
     end
   end
 
+  describe "#delivery_method" do
+    it "should use other delivery method if present" do
+      subject = Outpost::Notifiers::Email.new(
+          :from => 'mail@localhost',
+          :to   => 'mailer@example.com',
+          #using file_delivery send method for testing
+          :delivery_method => [:file, {:location => Dir.tmpdir}]
+        )
+
+      subject.notify(outpost_stub)
+
+      assert_equal Mail::TestMailer.deliveries, []
+    end
+
+    it "should use default if not present" do
+      subject = Outpost::Notifiers::Email.new(
+          :from => 'mail@example.com',
+          :to   => 'mailer@example.com'
+        )
+
+      subject.notify(outpost_stub)
+
+      assert_equal ["mail@example.com"], Mail::TestMailer.deliveries.first.from
+    end    
+  end
+
   describe "#notify" do
     it "should send a simple email" do
       subject = Outpost::Notifiers::Email.new(
