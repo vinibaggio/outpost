@@ -8,8 +8,7 @@ require 'minitest/spec'
 require 'minitest/autorun'
 
 # Integration test helpers
-require 'support/test_app'
-require 'support/server'
+require 'support/requests'
 require 'support/stubs'
 require 'support/nothing_raised'
 
@@ -20,4 +19,3 @@ require 'outpost/scouts'
 
 include Support::Stubs
 include Support::NothingRaised
-

@@ -27,7 +27,7 @@ So, summing it all up, Nagios in Ruby, much cooler!
 
 ## Installing
 
-Outpost is tested with Ruby 1.8.7 and Ruby 1.9.2.
+Outpost is tested with Ruby 1.8.7 and Ruby 1.9.3.
 
     gem install outpost
 

@@ -34,13 +34,18 @@ module Outpost
         @port       = options[:port]       || 80
         @path       = options[:path]       || '/'
         @http_class = options[:http_class] || Net::HTTP
+        @request_head = options.has_key?(:request_head) ? options[:request_head] : false
       end
 
       # Runs the scout, connecting to the host and getting the response code,
       # body and time.
       def execute
         previous_time = Time.now
-        response = @http_class.get_response(@host, @path, @port)
+        if @request_head
+          response = @http_class.request_head(@host, @path, @port)
+        else
+          response = @http_class.get_response(@host, @path, @port)
+        end
 
         @response_time = (Time.now - previous_time) * 1000 # Miliseconds
         @response_code = response.code.to_i
