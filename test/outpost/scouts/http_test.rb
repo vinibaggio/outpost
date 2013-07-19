@@ -3,11 +3,24 @@ require 'ostruct'
 
 describe Outpost::Scouts::Http do
   class NetHttpStub
-    class << self
-      def response(&block); @response = block; end
+    class Get
+      def initialize(*args); end
+    end
 
-      def get_response(*args)
-        @response.call
+    def initialize *args; end
+    def use_ssl= *args; end
+
+    def request(*args, &block)
+      self.class.response
+    end
+
+    class << self
+      def response(*args, &block)
+        if (block)
+          @response = block
+        else
+          @response.call
+        end
       end
 
       def request_head(*args)

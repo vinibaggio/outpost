@@ -1,5 +1,7 @@
 require 'test_helper'
 
+require 'tmpdir'
+
 describe Outpost::Notifiers::Email do
   before(:each) do
     Mail.defaults do

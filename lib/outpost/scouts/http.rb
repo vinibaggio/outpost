@@ -1,4 +1,5 @@
 require 'net/http'
+require 'net/https'
 require 'outpost/expectations'
 
 module Outpost
@@ -26,15 +27,17 @@ module Outpost
       # @option options [String] :host The host that will be connected to.
       # @option options [Number] :port The port that will be used to.
       # @option options [String] :path The path that will be fetched from the
+      # @option options [Boolean] :ssl Should we use ssl?
       #   host.
       # @option options [String] :http_class The class that will be used to
       #   fetch the page, defaults to Net::HTTP
       def setup(options)
-        @host       = options[:host]
-        @port       = options[:port]       || 80
-        @path       = options[:path]       || '/'
-        @http_class = options[:http_class] || Net::HTTP
-        @request_head = options.has_key?(:request_head) ? options[:request_head] : false
+        @host         = options.fetch(:host)
+        @path         = options.fetch(:path, '/')
+        @ssl          = options.fetch(:ssl, false)
+        @port         = options.fetch(:port, (@ssl ? 443 : 80))
+        @http_class   = options.fetch(:http_class, Net::HTTP)
+        @request_head = options.fetch(:request_head, false)
       end
 
       # Runs the scout, connecting to the host and getting the response code,
@@ -44,7 +47,16 @@ module Outpost
         if @request_head
           response = @http_class.request_head(@host, @path, @port)
         else
-          response = @http_class.get_response(@host, @path, @port)
+          uri = (@ssl ? URI::HTTPS : URI::HTTP).build({
+            host: @host,
+            port: @port,
+            path: @path
+          })
+          http = @http_class.new(uri.host, uri.port)
+          http.use_ssl = @ssl
+
+          request = @http_class::Get.new(uri.request_uri)
+          response = http.request(request)
         end
 
         @response_time = (Time.now - previous_time) * 1000 # Miliseconds
